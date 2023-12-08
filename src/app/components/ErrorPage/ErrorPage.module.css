@@ -1,0 +1,33 @@
+.errorContainer {
+  display: flex;
+  max-width: inherit;
+  min-height: inherit;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row-reverse;
+}
+
+.errorTextContainer {
+  width: 40%;
+}
+
+.errorPhotoContainer {
+  width: 80%;
+  height: 80%;
+}
+
+.errorImg {
+  width: 80%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .errorContainer {
+    flex-direction: column-reverse;
+  }
+
+  .errorImg {
+    width: 100%;
+  }
+}

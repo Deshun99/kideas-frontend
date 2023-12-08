@@ -1,0 +1,210 @@
+.header {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+}
+
+.nav {
+  display: flex;
+  padding: 16px;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #ffc0cb;
+}
+
+.logo {
+  margin-top: -5px; /* If needed */
+}
+
+.nav__menu_bar {
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+  cursor: pointer;
+  align-items: flex-start;
+  justify-content: flex-end; /* Adjust as needed */
+}
+
+.nav__menu_bar div {
+  width: 40px;
+  height: 4px;
+  background-color: black;
+  border-radius: 2px;
+}
+
+.nav__menu_list_light {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 60px;
+  width: 50%;
+  height: 100%;
+  row-gap: 24px;
+  right: -500px;
+  padding: 24px 16px;
+  transition: ease 0.2s;
+  background-color: #ffc0cb;
+}
+
+.nav__menu_list_light.active {
+  right: 0;
+}
+
+.menuItem {
+  text-align: center;
+}
+
+/* Style for the submenu */
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
+  z-index: 1000;
+}
+
+.submenu a {
+  padding: 8px 12px;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.submenu a:hover {
+  background-color: #53c28b;
+}
+
+/* Show the submenu when the main menu item is hovered */
+.nav__menu_list_light > div:hover .submenu {
+  display: block;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0px;
+}
+
+/* Initial styles for the overlay (hidden) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 1;
+  backdrop-filter: blur(5px);
+  transition: linear 0.3s;
+}
+
+/* Apply the blur effect when the overlay is active */
+.overlay.active {
+  pointer-events: auto;
+}
+
+@media screen and (min-width: 900px) {
+  .nav__menu_bar {
+    display: none;
+  }
+
+  .nav__menu_list, .nav__menu_list_light {
+    position: unset;
+    flex-direction: row;
+    min-height: fit-content;
+    width: fit-content;
+    column-gap: 24px;
+    align-items: center;
+    height: auto;
+  }
+
+  .nav__menu_list_light > div {
+    position: relative;
+    margin-right: 20px;
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid black;
+    z-index: 10;
+    width: 100%;
+    max-width: 250px;
+    border-radius: 5px;
+  }
+
+  .nav-item:hover .submenu {
+    display: block;
+  }
+
+  .submenu a {
+    padding: 8px 12px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .submenu a:hover {
+    background-color: #53c28b;
+  }
+
+  .nav__menu_list_light > div:hover .submenu {
+    display: block;
+    top: 100%;
+    left: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .submenu {
+    width: auto;
+    left: 100%;
+    top: 0;
+  }
+}
+
+@media (min-width: 390px) and (max-width: 428px) {
+  .nav-item:active .submenu,
+  .nav-item:hover .submenu {
+    display: block;
+  }
+
+  .submenu {
+    font-size: 16px;
+    margin: 0;
+    padding: 8px 0;
+  }
+
+  .submenu a {
+    padding: 8px 16px;
+    display: block;
+    text-decoration: none;
+  }
+
+  .submenu a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
