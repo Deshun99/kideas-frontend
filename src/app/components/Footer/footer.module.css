@@ -1,0 +1,8 @@
+.container {
+  position: relative; /* Added relative position */
+  height: 50px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Updated to center content */
+}

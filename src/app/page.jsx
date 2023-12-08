@@ -1,95 +1,51 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import Image from "next/image";
+import styles from "./page.module.css";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const session = useSession();
+
+  const accessToken =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.accessToken;
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
+    <div className={styles.container}>
+      <div className={styles.textContainer}>
+        <div className={styles.titleContainer}>
+          <p className={styles.mainTitle}>St</p>
+          <p className={styles.logoA}>a</p>
+          <p className={styles.mainTitle}>rHire</p>
+        </div>
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+          <p className={styles.description}>
+            because educators deserve the best
+          </p>
+        </div>
+        <div>
+          <h1 className={styles.secondaryTitle}>Opportunities</h1>
+        </div>
+        <div className={styles.buttonContainer}>
+          {!accessToken && (
+            <div className={styles.buttonContainer}>
+              <button
+                className={styles.button}
+                onClick={() => (window.location.href = "/login")}
+              >
+                Get Started
+              </button>
+            </div>
+          )}
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      {/* <div className={styles.imageContainer}>
+        <Image src={yellowStar} alt="Picture" className={styles.img} />
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <div className={styles.imageContainer2}>
+        <Image src={blueStar} alt="Picture" className={styles.img2} />
+      </div> */}
+    </div>
+  );
 }
