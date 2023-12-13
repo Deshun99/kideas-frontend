@@ -4,8 +4,8 @@
 
 .textContainer {
   position: absolute;
-  top: 50%; /* Vertically center the textContainer within the .container */
-  left: 40%; /* Horizontally center the textContainer within the .container */
+  top: 20%; /* Vertically center the textContainer within the .container */
+  left: 70%; /* Horizontally center the textContainer within the .container */
   transform: translate(-50%, -50%); /* Move the textContainer back to center */
   display: flex;
   flex-direction: column;
@@ -16,11 +16,11 @@
   position: absolute;
   top: 65%; /* Vertically center the imageContainer within the .container */
   left: calc(
-    40% + 300px
+    40% + 500px
   ); /* Position the imageContainer to the right of the textContainer with some margin */
   transform: translate(-50%, -65%); /* Move the imageContainer back to center */
-  width: auto;
-  height: auto;
+  width: 600px;
+  height: 400px;
 }
 
 .imageContainer2 {
@@ -53,7 +53,7 @@
   font-size: 80px;
   color: black;
   font-family: "Kollektif", sans-serif;
-  margin-top: 16px;
+  margin-top: 0px;
 }
 
 .description {
@@ -70,8 +70,9 @@
 }
 
 .img {
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .img2 {
