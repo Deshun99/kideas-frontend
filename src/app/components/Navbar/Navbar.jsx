@@ -68,7 +68,7 @@ const Navbar = () => {
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
           <Image
-            src="/Kideas_Logo-removebg.png"
+            src="/Kideas_logo.png"
             alt="Kideas"
             width={200}
             height={100}

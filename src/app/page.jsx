@@ -2,6 +2,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useSession } from "next-auth/react";
+import Parenthood from "./../../public/parenthood.jpg";
+import Parenthood2 from "./../../public/parenthood2.jpeg";
 
 export default function Home() {
   const session = useSession();
@@ -15,17 +17,17 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.textContainer}>
         <div className={styles.titleContainer}>
-          <p className={styles.mainTitle}>St</p>
-          <p className={styles.logoA}>a</p>
-          <p className={styles.mainTitle}>rHire</p>
+          <p className={styles.mainTitle}>K</p>
+          <p className={styles.logoA}>i</p>
+          <p className={styles.mainTitle}>deas</p>
         </div>
         <div>
           <p className={styles.description}>
-            because educators deserve the best
+            because you deserve the best
           </p>
         </div>
         <div>
-          <h1 className={styles.secondaryTitle}>Opportunities</h1>
+          <h1 className={styles.secondaryTitle}>Advices</h1>
         </div>
         <div className={styles.buttonContainer}>
           {!accessToken && (
@@ -40,12 +42,7 @@ export default function Home() {
           )}
         </div>
       </div>
-      {/* <div className={styles.imageContainer}>
-        <Image src={yellowStar} alt="Picture" className={styles.img} />
-      </div>
-      <div className={styles.imageContainer2}>
-        <Image src={blueStar} alt="Picture" className={styles.img2} />
-      </div> */}
+      <Image src={Parenthood2} alt="Picture" className={styles.img} />
     </div>
   );
 }
