@@ -44,3 +44,21 @@ export const createUser = async (userData) => {
     throw error;
   }
 }
+
+export const getAllUsers = async (accessToken) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+    const responseBody = await res.json();
+    return await responseBody;
+  } catch (error) {
+    console.log("There was a problem fetching the users", error);
+    throw error;
+  }
+}

@@ -18,7 +18,7 @@ export const ThemeProvider = ({ children }) => {
       accentColor: "#082948", // Accent color for dark theme
     },
     light: {
-      backgroundColor: "#ffc0cb", // Light background color
+      backgroundColor: "#fefbf6", // Light background color
       textColor: "#333333", // Dark text color
       accentColor: "#007acc", // Accent color for light theme
     },

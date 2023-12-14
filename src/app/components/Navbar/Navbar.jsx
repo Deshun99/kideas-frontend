@@ -24,7 +24,7 @@ const MENU_LIST_ADMIN = [
   { text: "Home", href: "/" },
   { text: "Chat", href: "/chat" },
   { text: "Multimedia", href: "/multimedia" },
-  { text: "Account Management", href: "/accountManagement" },
+  { text: "User Management", href: "/userManagement" },
   { text: "Topic Management", href: "/topicManagement" },
 ];
 
