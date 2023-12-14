@@ -5,9 +5,11 @@ import Navbar from "./components/Navbar/Navbar";
 import AuthProvider from "./components/AuthProvider/AuthProvider";
 import { UserContext, UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "@/app/context/ThemeContext";
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primereact/resources/themes/viva-light/theme.css";
 import 'primereact/resources/primereact.min.css'; // core css
 import 'primeicons/primeicons.css'; // icons
+import 'primeflex/primeflex.css';
+import { PrimeReactProvider } from "primereact/api";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,17 +22,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>
-          <AuthProvider>
-            <UserProvider>
-              <div className="container">
-                <Navbar />
-                {children}
-                <Footer />
-              </div>
-            </UserProvider>
-          </AuthProvider>
-        </ThemeProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <UserProvider>
+                <div className="container">
+                  <Navbar />
+                  {children}
+                  <Footer />
+                </div>
+              </UserProvider>
+            </AuthProvider>
+          </ThemeProvider>
       </body>
     </html>
   );
