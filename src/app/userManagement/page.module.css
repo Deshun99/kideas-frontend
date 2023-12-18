@@ -107,3 +107,9 @@
   margin-bottom: 0px; /* Add some spacing below the image */
 }
 
+.statusDialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif; 
+}
