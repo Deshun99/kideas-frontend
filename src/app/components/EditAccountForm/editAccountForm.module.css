@@ -1,0 +1,153 @@
+.container {
+  width: 100%;
+}
+
+.title {
+  font-size: 40px;
+  color: #000000; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif; 
+}
+
+.card {
+  background-color: inherit;
+  border: black 2px;
+}
+
+/* Input field styles */
+.inputFields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-items: flex-start; /* Adjusted to align start */
+    justify-content: center;
+    width: 600px;
+    margin: 0 auto;
+}
+
+.field {
+    display: flex;
+    flex-direction: column; /* Set the direction to column to stack label above input */
+    width: 100%; /* Take the full width */
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif; 
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.avatarContainer {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 2px solid #000; 
+}
+
+.pdfButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+.smallButton {
+    font-size: 10px;     /* Smaller font size */
+    padding: 4px 8px;    /* Less padding for a smaller overall size */
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.customButton {
+  background-color: #35acfe; 
+  font-family: 'Montserrat', sans-serif; 
+  border: none;
+}
+
+.followingContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.radioFields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: 'Montserrat', sans-serif; 
+}
+
+.radioOption {
+  display: flex;
+  flex-direction: row;
+  align-items: column;
+  gap: 8px;
+}
+
+.cardFollowing {
+  background-color: #ffffff;    /* White background */
+    border-radius: 8px;           /* Rounded corners */
+    width: 600px;             /* Maximum width of the dialog box */
+    margin: 40px auto;            /* Centering the dialog box on the page with 40px margin from top and bottom */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), /* Horizontal shadow, vertical shadow, blur, spread and color */
+                0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;                /* Padding inside the dialog box */
+    position: relative;           /* Set position to relative to allow absolute positioning within the dialog */
+    overflow: hidden; 
+}
+
+.fileField {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* vertically aligns items in the center */
+    justify-content: flex-start; /* aligns items to the start of the container */
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;  /* Reduced font size for mobile screens */
+    margin-bottom: 15px;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 8px;
+  }
+
+  .inputFields {
+    width: 100%;   /* Use full width on mobile screens */
+    grid-template-columns: 1fr; /* Change to single column layout for mobile */
+  }
+
+  .pdfButtons {
+    flex-direction: column;  /* Stack the buttons vertically */
+    gap: 10px;  /* Add spacing between the stacked buttons */
+  }
+
+  .smallButton {
+    margin: 0 auto;  /* Center the button if it's not full width */
+  }
+
+  .fileField {
+    flex-direction: column; 
+    margin: 10 auto; /* Stack file label and input vertically */
+  }
+}

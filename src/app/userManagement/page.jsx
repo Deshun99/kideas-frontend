@@ -201,11 +201,11 @@ const UserManagement = () => {
               width: "100%",
               minHeight: "100px"
             }}
-            rows={10}
+            rows={5}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             paginatorBottom={true} // Ensure pagination is at the bottom
             paginatorStyle={paginationStyle} // Apply the pagination style
-            rowsPerPageOptions={[5, 10, 25, 50]}
+            rowsPerPageOptions={[5]}
             dataKey="id"
             selectionMode="checkbox"
             selection={selectedUsers}
