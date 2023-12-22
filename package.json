@@ -18,7 +18,8 @@
     "primereact": "^9.6.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-error-boundary": "^4.0.11"
+    "react-error-boundary": "^4.0.11",
+    "react-responsive": "^9.0.2"
   },
   "devDependencies": {
     "eslint": "^8",
