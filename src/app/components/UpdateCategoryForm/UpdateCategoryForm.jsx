@@ -1,18 +1,34 @@
-import React, { useState, useRef } from "react";
-import styles from "./createCategoryForm.module.css";
+import React, { useState, useRef, useEffect } from "react";
+import styles from "./updateCategoryForm.module.css";
 import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
-import { createCategory } from "@/app/api/category/route";
+import { updateCategory } from "@/app/api/category/route";
+import { Checkbox } from "primereact/checkbox";
 
-const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
+const UpdateCategoryForm = ({
+  accessToken,
+  setRefreshData,
+  selectedRowData,
+}) => {
   const [formData, setFormData] = useState({
     categoryTitle: "",
     forumGuidelines: [""],
+    isArchived: false,
   });
   const [validityMessages, setValidityMessages] = useState({});
   const toast = useRef(null);
+
+  useEffect(() => {
+    if (selectedRowData) {
+      setFormData({
+        categoryTitle: selectedRowData.categoryTitle,
+        forumGuidelines: selectedRowData.forumGuidelines.split("~"),
+        isArchived: selectedRowData.isArchived,
+      });
+    }
+  }, [selectedRowData]);
 
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -31,12 +47,16 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      categoryTitle: "",
-      forumGuidelines: [""],
-    });
+  const handleCheckboxChange = (e) => {
+    setFormData({ ...formData, isArchived: e.checked });
   };
+
+//   const resetForm = () => {
+//     setFormData({
+//       categoryTitle: "",
+//       forumGuidelines: [""],
+//     });
+//   };
 
   const addNewGuideline = () => {
     setFormData({
@@ -102,24 +122,25 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
 
     // Proceed with form submission logic if no errors are found
     try {
+     
       const reqBody = {
         categoryTitle: formData.categoryTitle,
         forumGuidelines: formData.forumGuidelines.join("~"),
         isArchived: formData.isArchived,
       };
 
-      const response = await createCategory(reqBody, accessToken);
+      const response = await updateCategory(reqBody, selectedRowData.categoryId, accessToken);
 
       if (response) {
         toast.current.show({
           severity: "success",
           summary: "Success",
-          detail: "Successfully Created Category",
+          detail: "Successfully Updated Category",
           life: 5000,
         });
         setRefreshData((prev) => !prev); // Assuming this is a function passed as a prop
         // Assuming resetForm is a function you have defined to reset the form
-        resetForm();
+        // resetForm();
       }
     } catch (error) {
       // Handle errors that occur during the API call
@@ -194,4 +215,4 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
   );
 };
 
-export default CreateCategoryForm;
+export default UpdateCategoryForm;
