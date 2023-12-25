@@ -13,15 +13,15 @@ Kideas Multimedia System stands out as a dynamic platform for parents, emphasizi
 ## Table of Contents
 
 - [System Overview](#system-overview)
-  - [Teacher Course Management System](#teacher-course-management-system)
-  - [Student Learning System](#student-learning-system)
-  - [Admin Management System](#admin-management-system)
+  - [Administrators](#administrators)
+  - [Content Creator](#content-creator)
+  - [Visitor](#visitor)
 - [🌟 Innovative Features 🌟](#innovative-features)
 - [Tech Stack](#tech-stack)
 
 ## System Overview
 
-Kideas consists of 1 front-end system that is catered the needs of different stakeholders:
+Kideas features a versatile front-end system meticulously designed to cater to the diverse needs of various stakeholders:
 
 ### Administrators
 
