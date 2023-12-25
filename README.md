@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Kideas Multimedia System
 
-## Getting Started
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=react,nextjs,nestjs,mysql,aws" />
+  </a>
+</p>
 
-First, run the development server:
+Kideas Multimedia System stands out as a dynamic platform for parents, emphasizing the sharing of experiences in early childhood education. It not only offers expert advice but also fosters a vibrant community where parents can connect, exchange insights, and learn from each other's journeys. This emphasis on shared experiences makes Kideas an invaluable resource for parents seeking practical tips and emotional support during the formative years of their child’s development.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+✨ Visit our [website](https://kideas-frontend.vercel.app/)! ✨
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Table of Contents
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- [System Overview](#system-overview)
+  - [Teacher Course Management System](#teacher-course-management-system)
+  - [Student Learning System](#student-learning-system)
+  - [Admin Management System](#admin-management-system)
+- [🌟 Innovative Features 🌟](#innovative-features)
+- [Tech Stack](#tech-stack)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## System Overview
 
-## Learn More
+Kideas consists of the following front-end systems that is catered the needs of different stakeholders:
 
-To learn more about Next.js, take a look at the following resources:
+### Admin Management System
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Content Creator System
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Visitor System
 
-## Deploy on Vercel
+## Innovative Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Video Uploading 
+- Chat Function
+- Email Notification
+- JWT Authentication
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Other core features:
+- Dashboard Analytics
+- Points Reward
+- Time-limited Email Reset Token
+
+## Tech Stack
+
+- **Frontend Framework:** React and Next.js
+- **Backend Framework:** Node.js and NestJS
+- **Database:** MySQL
+- **ORM (Object-Relational Mapping):** TypeORM
