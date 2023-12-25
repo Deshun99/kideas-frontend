@@ -8,7 +8,7 @@
 
 Kideas Multimedia System stands out as a dynamic platform for parents, emphasizing the sharing of experiences in early childhood education. It not only offers expert advice but also fosters a vibrant community where parents can connect, exchange insights, and learn from each other's journeys. This emphasis on shared experiences makes Kideas an invaluable resource for parents seeking practical tips and emotional support during the formative years of their child’s development.
 
-✨ Visit our [website](https://kideas-frontend.vercel.app/)! ✨
+✨ Visit our [website](https://kideas-frontend.vercel.app)! ✨
 
 ## Table of Contents
 
