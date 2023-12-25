@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
 import { createCategory } from "@/app/api/category/route";
+import { Checkbox } from "primereact/checkbox";
 
 const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
   const [formData, setFormData] = useState({

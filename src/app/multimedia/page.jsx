@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import MediaQuery, { useMediaQuery } from "react-responsive";
 
-const MultimediaPage = () =>  {
+const Multimedia = () =>  {
     const session = useSession();
     const router = useRouter();
 
@@ -42,6 +42,6 @@ const MultimediaPage = () =>  {
       setMounted(true);
     }, []);
 
-    
-
 }
+
+export default Multimedia;
