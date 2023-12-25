@@ -21,13 +21,19 @@ Kideas Multimedia System stands out as a dynamic platform for parents, emphasizi
 
 ## System Overview
 
-Kideas consists of the following front-end systems that is catered the needs of different stakeholders:
+Kideas consists of 1 front-end system that is catered the needs of different stakeholders:
 
-### Admin Management System
+### Administrators
 
-### Content Creator System
+This system empowers administrators with comprehensive control over the platform. Admins can manage user accounts, ensuring that all members adhere to the platform's guidelines. A crucial part of their role involves overseeing content posted by content creators. This includes moderating videos and comments linked to each topic, maintaining a respectful and informative environment. Additionally, admins have the capability to directly communicate with content creators, facilitating a smooth operation of the platform.
 
-### Visitor System
+### Content Creator
+
+Aimed at those who produce and share educational content, this system allows content creators to establish and manage topics within various categories. They can upload videos to these topics, sharing their knowledge and insights or seeking advice and feedback. Engagement and contribution are rewarded with points, which can be redeemed for various benefits. Besides creating content, they have access to view and comment on videos posted by their peers, fostering a collaborative and interactive community.
+
+### Visitor
+
+Visitors, who have view-only access, can explore the diverse range of topics and watch the videos associated with them. This system is designed for users who are seeking information and learning opportunities without the need to engage actively. While visitors cannot post comments, they benefit from unrestricted access to the wealth of knowledge shared within the platform's categories and topics.
 
 ## Innovative Features
 
