@@ -11,6 +11,8 @@ const UpdateCategoryForm = ({
   accessToken,
   setRefreshData,
   selectedRowData,
+  closeDialog,
+  showToast,
 }) => {
   const [formData, setFormData] = useState({
     categoryTitle: "",
@@ -51,13 +53,6 @@ const UpdateCategoryForm = ({
     setFormData({ ...formData, isArchived: e.checked });
   };
 
-//   const resetForm = () => {
-//     setFormData({
-//       categoryTitle: "",
-//       forumGuidelines: [""],
-//     });
-//   };
-
   const addNewGuideline = () => {
     setFormData({
       ...formData,
@@ -73,10 +68,6 @@ const UpdateCategoryForm = ({
       ...formData,
       forumGuidelines: updatedGuidelines,
     });
-    // Also remove the validity message for the removed guideline
-    // const updatedMessages = { ...validityMessages };
-    // delete updatedMessages[index];
-    // setValidityMessages(updatedMessages);
   };
 
   const handleSubmit = async (e) => {
@@ -110,7 +101,7 @@ const UpdateCategoryForm = ({
     // Show toast with specific error messages if any
     if (errorMessages.length > 0) {
       const detail = errorMessages.join(" ");
-      toast.current.show({
+      showToast({
         severity: "error",
         summary: "Validation Failed",
         detail: detail,
@@ -122,17 +113,20 @@ const UpdateCategoryForm = ({
 
     // Proceed with form submission logic if no errors are found
     try {
-     
       const reqBody = {
         categoryTitle: formData.categoryTitle,
         forumGuidelines: formData.forumGuidelines.join("~"),
         isArchived: formData.isArchived,
       };
 
-      const response = await updateCategory(reqBody, selectedRowData.categoryId, accessToken);
+      const response = await updateCategory(
+        reqBody,
+        selectedRowData.categoryId,
+        accessToken
+      );
 
       if (response) {
-        toast.current.show({
+        showToast({
           severity: "success",
           summary: "Success",
           detail: "Successfully Updated Category",
@@ -140,11 +134,11 @@ const UpdateCategoryForm = ({
         });
         setRefreshData((prev) => !prev); // Assuming this is a function passed as a prop
         // Assuming resetForm is a function you have defined to reset the form
-        // resetForm();
+        closeDialog();
       }
     } catch (error) {
       // Handle errors that occur during the API call
-      toast.current.show({
+      showToast({
         severity: "error",
         summary: "Error",
         detail:
@@ -153,6 +147,7 @@ const UpdateCategoryForm = ({
         sticky: true,
       });
     }
+    closeDialog();
   };
 
   return (

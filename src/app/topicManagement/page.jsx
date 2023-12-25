@@ -11,9 +11,7 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
-import Enums from "../common/enums/enums";
-import { Tooltip } from "primereact/tooltip";
-import { getAllCategory } from "../api/category/route";
+import { deleteCategory, getAllCategory } from "../api/category/route";
 import CreateCategoryForm from "../components/CreateCategoryForm/CreateCategoryForm";
 import UpdateCategoryForm from "../components/UpdateCategoryForm/UpdateCategoryForm";
 
@@ -40,7 +38,7 @@ const TopicManagement = () => {
      const [refreshData, setRefreshData] = useState(false);
      const [isLoading, setIsLoading] = useState(true);
      const [category, setCategory] = useState(null);
-     const [selectedCategory, setSelectedCategory] = useState([]);
+     // const [selectedCategory, setSelectedCategory] = useState([]);
      const [selectedRowData, setSelectedRowData] = useState(null);
      const [filters, setFilters] = useState({
        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -49,11 +47,11 @@ const TopicManagement = () => {
          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }],
        },
      });
-
      const [globalFilterValue, setGlobalFilterValue] = useState("");
-     const [userStatusDialog, setUserStatusDialog] = useState(false);
+     const [updateCategoryDialog, setUpdateCategoryDialog] = useState(false);
      const [createCategoryDialog, setCreateCategoryDialog] = useState(false);
-
+     const [deleteCategoryDialog, setDeleteCategoryDialog] = useState(false);
+    
      const onGlobalFilterChange = (e) => {
        const value = e.target.value;
        let _filters = { ...filters };
@@ -126,26 +124,92 @@ const TopicManagement = () => {
                className={styles.buttonIcon}
                onClick={() => {
                  setSelectedRowData(rowData);
-                 showUserStatusDialog(rowData);
+                 showUpdateCategoryDialog(rowData);
                }}
                tooltip="Update Category"
+               tooltipOptions={{ position: "top" }}
+             />
+             <Button
+               icon="pi pi-times"
+               rounded
+               outlined
+               className={styles.buttonIcon}
+               onClick={() => {
+                 setSelectedRowData(rowData);
+                 showDeleteCategoryDialog(rowData);
+               }}
+               tooltip="Delete Category"
                tooltipOptions={{ position: "top" }}
              />
            </>
          );
      };
 
-      const hideStatusDialog = () => {
-        setUserStatusDialog(false);
+      const hideUpdateCategoryDialog = () => {
+        setUpdateCategoryDialog(false);
       };
 
       const hideCreateCategoryDialog = () => {
         setCreateCategoryDialog(false);
       }
 
-      const showUserStatusDialog = (rowData) => {
-        setUserStatusDialog(true);
+      const hideDeleteCategoryDialog = () => {
+        setDeleteCategoryDialog(false);
+      }
+
+      const showUpdateCategoryDialog = (rowData) => {
+        setUpdateCategoryDialog(true);
       };
+
+      const hideStatusDialog = (rowData) => {
+        setDeleteCategoryDialog(false);
+      }
+
+      const showDeleteCategoryDialog = (rowData) => {
+        setDeleteCategoryDialog(true);
+      }
+
+      const saveStatusChange = async () => {
+        try {
+          const categoryId = selectedRowData.categoryId;
+          const response = await deleteCategory(
+            categoryId,
+            accessToken
+          );
+
+          if (response) {
+            setSelectedRowData();
+            toast.current.show({
+              severity: "success",
+              summary: "Success",
+              detail: `Category ${categoryId} is deleted!`,
+              life: 5000,
+            });
+          }
+          setRefreshData((prev) => !prev);
+        } catch (error) {
+          console.log("Failed to delete category");
+          toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: error.message,
+            life: 5000,
+          });
+        }
+        hideDeleteCategoryDialog();
+      };
+
+      const userDialogFooter = (
+        <React.Fragment>
+          <Button
+            label="Cancel"
+            icon="pi pi-times"
+            outlined
+            onClick={hideStatusDialog}
+          />
+          <Button label="Yes" icon="pi pi-check" onClick={saveStatusChange} />
+        </React.Fragment>
+      );
 
       if (session.status === "loading") {
         return <ProgressSpinner />;
@@ -187,9 +251,9 @@ const TopicManagement = () => {
                 paginatorStyle={paginationStyle} // Apply the pagination style
                 rowsPerPageOptions={[5]}
                 dataKey="id"
-                selectionMode="checkbox"
-                selection={selectedCategory}
-                onSelectionChange={(e) => setSelectedCategory(e.value)}
+                //selectionMode="checkbox"
+                //selection={selectedCategory}
+                //onSelectionChange={(e) => setSelectedCategory(e.value)}
                 filters={filters}
                 filterDisplay="menu"
                 globalFilterFields={[
@@ -214,16 +278,18 @@ const TopicManagement = () => {
                 <Column header="Action" body={actionBody}></Column>
               </DataTable>
               <Dialog
-                visible={userStatusDialog}
+                visible={updateCategoryDialog}
                 style={styles.updateCategoryDialog}
                 header="Update Category"
                 draggable={false}
-                onHide={hideStatusDialog}
+                onHide={hideUpdateCategoryDialog}
               >
                 <UpdateCategoryForm
                   accessToken={accessToken}
                   setRefreshData={setRefreshData}
                   selectedRowData={selectedRowData}
+                  closeDialog={() => setUpdateCategoryDialog(false)}
+                  showToast={toast.current.show}
                 />
               </Dialog>
               <Dialog
@@ -236,7 +302,22 @@ const TopicManagement = () => {
                 <CreateCategoryForm
                   accessToken={accessToken}
                   setRefreshData={setRefreshData}
+                  closeDialog={() => setCreateCategoryDialog(false)}
+                  showToast={toast.current.show}
                 />
+              </Dialog>
+              <Dialog
+                header="Delete Category"
+                visible={deleteCategoryDialog}
+                onHide={hideDeleteCategoryDialog}
+                draggable={false}
+                style={styles.deleteCategoryDialog}
+                footer={userDialogFooter}
+              >
+                <h3 className={styles.statusDialog}>
+                  Are you sure you want to delete category{" "}
+                  {selectedRowData && selectedRowData.categoryId} ?
+                </h3>
               </Dialog>
             </div>
           </>
