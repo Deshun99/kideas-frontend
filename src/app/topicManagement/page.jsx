@@ -15,6 +15,7 @@ import Enums from "../common/enums/enums";
 import { Tooltip } from "primereact/tooltip";
 import { getAllCategory } from "../api/category/route";
 import CreateCategoryForm from "../components/CreateCategoryForm/CreateCategoryForm";
+import UpdateCategoryForm from "../components/UpdateCategoryForm/UpdateCategoryForm";
 
 const TopicManagement = () => {
     const session = useSession();
@@ -50,7 +51,6 @@ const TopicManagement = () => {
      });
 
      const [globalFilterValue, setGlobalFilterValue] = useState("");
-     const [viewUserDialog, setViewUserDialog] = useState(false);
      const [userStatusDialog, setUserStatusDialog] = useState(false);
      const [createCategoryDialog, setCreateCategoryDialog] = useState(false);
 
@@ -117,24 +117,6 @@ const TopicManagement = () => {
      }
 
      const actionBody = (rowData) => {
-       if (userId === rowData.userId) {
-         return (
-           <>
-             <Button
-               icon="pi pi-search"
-               rounded
-               outlined
-               className={styles.buttonIcon}
-               onClick={() => {
-                 setSelectedRowData(rowData);
-                 showViewUserDialog(rowData);
-               }}
-               tooltip="View Details"
-               tooltipOptions={{ position: "top" }}
-             />
-           </>
-         );
-       } else {
          return (
            <>
              <Button
@@ -146,33 +128,12 @@ const TopicManagement = () => {
                  setSelectedRowData(rowData);
                  showUserStatusDialog(rowData);
                }}
-               tooltip="Update Status"
-               tooltipOptions={{ position: "top" }}
-             />
-             <Button
-               icon="pi pi-search"
-               rounded
-               outlined
-               className={styles.buttonIcon}
-               onClick={() => {
-                 setSelectedRowData(rowData);
-                 setViewUserDialog(rowData);
-               }}
-               tooltip="View Details"
+               tooltip="Update Category"
                tooltipOptions={{ position: "top" }}
              />
            </>
          );
-       }
      };
-
-      const hideViewDialog = () => {
-        setViewUserDialog(false);
-      };
-
-      const showViewUserDialog = (rowData) => {
-        setViewUserDialog(true);
-      };
 
       const hideStatusDialog = () => {
         setUserStatusDialog(false);
@@ -185,55 +146,6 @@ const TopicManagement = () => {
       const showUserStatusDialog = (rowData) => {
         setUserStatusDialog(true);
       };
-
-      const saveStatusChange = async () => {
-        try {
-          const toggledStatus =
-            selectedRowData.status === Enums.ACTIVE
-              ? Enums.INACTIVE
-              : Enums.ACTIVE;
-          const request = {
-            status: toggledStatus,
-          };
-          const response = await updateUser(
-            request,
-            selectedRowData.userId,
-            accessToken
-          );
-
-          if (response) {
-            setSelectedRowData();
-            setUserStatusDialog(false);
-            toast.current.show({
-              severity: "success",
-              summary: "Success",
-              detail: `User ${selectedRowData.userId} updated successfully!`,
-              life: 5000,
-            });
-          }
-          setRefreshData((prev) => !prev);
-        } catch (error) {
-          console.log("Failed to update user");
-          toast.current.show({
-            severity: "error",
-            summary: "Error",
-            detail: error.message,
-            life: 5000,
-          });
-        }
-      };
-
-      const userDialogFooter = (
-        <React.Fragment>
-          <Button
-            label="Cancel"
-            icon="pi pi-times"
-            outlined
-            onClick={hideStatusDialog}
-          />
-          <Button label="Yes" icon="pi pi-check" onClick={saveStatusChange} />
-        </React.Fragment>
-      );
 
       if (session.status === "loading") {
         return <ProgressSpinner />;
@@ -288,38 +200,31 @@ const TopicManagement = () => {
                 emptyMessage="No category found."
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
               >
-                <Column field="categoryId" header="Category Id" sortable></Column>
+                <Column
+                  field="categoryId"
+                  header="Category Id"
+                  sortable
+                ></Column>
                 <Column field="categoryTitle" header="Title" sortable></Column>
-                <Column field="isArchived" header="Is Archived" sortable></Column>
+                <Column
+                  field="isArchived"
+                  header="Is Archived"
+                  sortable
+                ></Column>
                 <Column header="Action" body={actionBody}></Column>
               </DataTable>
-
-              <Dialog
-                visible={viewUserDialog}
-                style={{ width: "32rem" }}
-                breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-                header="User Details"
-                modal
-                className="p-fluid"
-                onHide={hideViewDialog}
-              ></Dialog>
-
               <Dialog
                 visible={userStatusDialog}
-                style={{ width: "32rem" }}
-                breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-                header={`Change Status to ${
-                  selectedRowData &&
-                  (selectedRowData.status === "Active" ? "Inactive" : "Active")
-                }`}
-                className="p-fluid"
-                footer={userDialogFooter}
+                style={styles.updateCategoryDialog}
+                header="Update Category"
+                draggable={false}
                 onHide={hideStatusDialog}
               >
-                <h3 className={styles.statusDialog}>
-                  Are you sure you want to change the status of{" "}
-                  {selectedRowData && selectedRowData.userName}?
-                </h3>
+                <UpdateCategoryForm
+                  accessToken={accessToken}
+                  setRefreshData={setRefreshData}
+                  selectedRowData={selectedRowData}
+                />
               </Dialog>
               <Dialog
                 header="Create Category"
@@ -328,7 +233,10 @@ const TopicManagement = () => {
                 draggable={false}
                 style={styles.createCategoryDialog}
               >
-                <CreateCategoryForm />
+                <CreateCategoryForm
+                  accessToken={accessToken}
+                  setRefreshData={setRefreshData}
+                />
               </Dialog>
             </div>
           </>
