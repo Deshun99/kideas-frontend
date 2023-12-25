@@ -55,3 +55,25 @@ export const updateCategory = async (request, id, accessToken) => {
     throw error;
   }
 };
+
+export const deleteCategory = async (id, accessToken) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    const responseBody = await res.json();
+    return await responseBody;
+  } catch (error) {
+    console.log("There was a problem fetching the users", error);
+    throw error;
+  }
+};

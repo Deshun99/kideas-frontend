@@ -7,10 +7,16 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { createCategory } from "@/app/api/category/route";
 import { Checkbox } from "primereact/checkbox";
 
-const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
+const CreateCategoryForm = ({
+  accessToken,
+  setRefreshData,
+  closeDialog,
+  showToast,
+}) => {
   const [formData, setFormData] = useState({
     categoryTitle: "",
     forumGuidelines: [""],
+    isArchived: false,
   });
   const [validityMessages, setValidityMessages] = useState({});
   const toast = useRef(null);
@@ -58,10 +64,6 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
       ...formData,
       forumGuidelines: updatedGuidelines,
     });
-    // Also remove the validity message for the removed guideline
-    // const updatedMessages = { ...validityMessages };
-    // delete updatedMessages[index];
-    // setValidityMessages(updatedMessages);
   };
 
   const handleSubmit = async (e) => {
@@ -95,7 +97,7 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
     // Show toast with specific error messages if any
     if (errorMessages.length > 0) {
       const detail = errorMessages.join(" ");
-      toast.current.show({
+      showToast({
         severity: "error",
         summary: "Validation Failed",
         detail: detail,
@@ -116,7 +118,7 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
       const response = await createCategory(reqBody, accessToken);
 
       if (response) {
-        toast.current.show({
+        showToast({
           severity: "success",
           summary: "Success",
           detail: "Successfully Created Category",
@@ -125,10 +127,11 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
         setRefreshData((prev) => !prev); // Assuming this is a function passed as a prop
         // Assuming resetForm is a function you have defined to reset the form
         resetForm();
+        closeDialog();
       }
     } catch (error) {
       // Handle errors that occur during the API call
-      toast.current.show({
+      showToast({
         severity: "error",
         summary: "Error",
         detail:
