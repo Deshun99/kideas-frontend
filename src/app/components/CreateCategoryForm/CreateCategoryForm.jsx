@@ -32,6 +32,10 @@ const CreateCategoryForm = ({ accessToken, setRefreshData }) => {
     }
   };
 
+  const handleCheckboxChange = (e) => {
+    setFormData({ ...formData, isArchived: e.checked });
+  };
+
   const resetForm = () => {
     setFormData({
       categoryTitle: "",
