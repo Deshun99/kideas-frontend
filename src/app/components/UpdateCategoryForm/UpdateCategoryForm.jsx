@@ -101,13 +101,15 @@ const UpdateCategoryForm = ({
     // Show toast with specific error messages if any
     if (errorMessages.length > 0) {
       const detail = errorMessages.join(" ");
-      showToast({
-        severity: "error",
-        summary: "Validation Failed",
-        detail: detail,
-        life: 5000,
-        sticky: true,
-      });
+      if (showToast.current) {
+        showToast.current.show({
+          severity: "error",
+          summary: "Validation Failed",
+          detail: detail,
+          life: 5000,
+          sticky: true,
+        });
+      }
       return;
     }
 
@@ -126,33 +128,36 @@ const UpdateCategoryForm = ({
       );
 
       if (response) {
-        showToast({
-          severity: "success",
-          summary: "Success",
-          detail: "Successfully Updated Category",
-          life: 5000,
-        });
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "success",
+            summary: "Success",
+            detail: "Successfully Created Category",
+            life: 5000,
+          });
+        }
         setRefreshData((prev) => !prev); // Assuming this is a function passed as a prop
         // Assuming resetForm is a function you have defined to reset the form
         closeDialog();
       }
     } catch (error) {
       // Handle errors that occur during the API call
-      showToast({
-        severity: "error",
-        summary: "Error",
-        detail:
-          error.message || "An error occurred while creating the category.",
-        life: 5000,
-        sticky: true,
-      });
+      if (showToast.current) {
+        showToast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail:
+            error.message || "An error occurred while creating the category.",
+          life: 5000,
+          sticky: true,
+        });
+      }
     }
     closeDialog();
   };
 
   return (
     <>
-      <Toast ref={toast} />
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.categoryTitleContainer}>
           <h4 className={styles.categoryTitleHeader}>Category Title</h4>
