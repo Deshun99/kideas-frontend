@@ -289,7 +289,7 @@ const TopicManagement = () => {
                   setRefreshData={setRefreshData}
                   selectedRowData={selectedRowData}
                   closeDialog={() => setUpdateCategoryDialog(false)}
-                  showToast={toast.current.show}
+                  showToast={toast}
                 />
               </Dialog>
               <Dialog
@@ -303,7 +303,7 @@ const TopicManagement = () => {
                   accessToken={accessToken}
                   setRefreshData={setRefreshData}
                   closeDialog={() => setCreateCategoryDialog(false)}
-                  showToast={toast.current.show}
+                  showToast={toast}
                 />
               </Dialog>
               <Dialog
