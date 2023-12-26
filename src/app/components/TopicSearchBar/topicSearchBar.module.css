@@ -1,0 +1,9 @@
+.forumSearchBar {
+  width: 25vw;
+}
+
+@media only screen and (max-width: 1224px) {
+  .forumSearchBar {
+    width: 62vw;
+  }
+}
