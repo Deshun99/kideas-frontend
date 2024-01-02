@@ -46,3 +46,27 @@ export const getSortedTopics = async () => {
     throw error;
   }
 };
+
+export const createTopic = async (topicData, accessToken) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/topic`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(topicData),
+    });
+    const responseBody = await res.json();
+
+    if (responseBody.statusCode === 404) {
+      throw new Error(responseBody.message || "An error occurred");
+    }
+
+    console.log("Tesla");
+    return await responseBody;
+  } catch (error) {
+    console.log("There was a problem creating topic", error);
+    throw error;
+  }
+}

@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 // import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 import Enums from "@/app/common/enums/enums";
+import { createTopic } from "@/app/api/topic/route";
 
 const CreateTopic = ({
   userIdRef,
@@ -15,6 +16,7 @@ const CreateTopic = ({
   categories,
   onSubmitSuccess,
   setRefreshData,
+  showToast,
 }) => {
   categories = categories?.filter(
     (category) => category.categoryTitle !== "My Posts"
@@ -22,15 +24,13 @@ const CreateTopic = ({
 
   const forumCategoryTitleToId = {};
   categories.forEach((category) => {
-    forumCategoryTitleToId[category.categoryTitle] =
-      category.categoryId;
+    forumCategoryTitleToId[category.categoryTitle] = category.categoryId;
   });
 
   const [topicTitle, setTopicTitle] = useState("");
-  const [topicContent, setTopicContent] = useState("");
+  const [topicDescription, setTopicDescription] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [checkedGuideLines, setCheckedGuideLines] = useState("");
-  const [anonymous, setAnonymous] = useState(false);
   const [formData, setFormData] = useState({
     topicTitle: "",
     topicDescription: "",
@@ -58,7 +58,7 @@ const CreateTopic = ({
   const handleTopicDescriptionChange = (e) => {
     const inputValue = e.target.value;
     if (inputValue.length <= maxCharacterCount) {
-      setTopicContent(e.target.value);
+      setTopicDescription(e.target.value);
       setFormData((prevData) => ({
         ...prevData,
         topicDescription: e.target.value,
@@ -75,20 +75,11 @@ const CreateTopic = ({
     }));
   };
 
-//   const handleAnonymousChange = (e) => {
-//     setAnonymous(e.checked);
-//     setFormData((prevData) => ({
-//       ...prevData,
-//       isAnonymous: e.checked,
-//     }));
-//   };
-
   const resetForm = () => {
-    setPostTitle("");
-    setPostContent("");
+    setTopicTitle("");
+    setTopicDescription("");
     setSelectedCategory("");
     setCheckedGuideLines("");
-    setAnonymous(false);
     setFormData({
       topicTitle: "",
       topicDescription: "",
@@ -102,14 +93,14 @@ const CreateTopic = ({
     e.preventDefault();
 
     // Check title validity
-    if (!postTitle.trim()) {
+    if (!topicTitle.trim()) {
       setTitleValid(false);
     } else {
       setTitleValid(true);
     }
 
     // Check content validity
-    if (!postContent.trim()) {
+    if (!topicDescription.trim()) {
       setContentValid(false);
     } else {
       setContentValid(true);
@@ -129,114 +120,159 @@ const CreateTopic = ({
       setGuideLinesValid(true);
     }
 
-    // if (
-    //   postTitle.trim() &&
-    //   postContent.trim() &&
-    //   selectedCategory &&
-    //   checkedGuideLines
-    // ) {
-    //   setFormValid(true);
+    if (
+      topicTitle.trim() &&
+      topicDescription.trim() &&
+      selectedCategory &&
+      checkedGuideLines
+    ) {
+      setFormValid(true);
 
-    //   try {
-    //     const response = await createPost(formData, accessToken);
-    //     console.log("Forum post has been created");
-    //     resetForm();
-    //     onSubmitSuccess();
-    //     setRefreshData((prev) => !prev); // refresh the forum posts once post creation
-    //   } catch (error) {
-    //     console.error(
-    //       "There was an error creating the forum post",
-    //       error.message
-    //     );
-    //     toast.current.show({
-    //       severity: "error",
-    //       summary: "Error",
-    //       detail: "There was an error creating the forum post",
-    //       life: 5000,
-    //     });
-    //   }
-    // } else {
-    //   // The form is invalid, do not submit
-    //   setFormValid(false);
+      try {
+        const response = await createTopic(formData, accessToken);
 
-    //   // Show a toast message for each empty field
-    //   if (!postTitle.trim()) {
-    //     toast.current.show({
-    //       severity: "warn",
-    //       summary: "Warning",
-    //       detail: "Please fill up the title",
-    //       life: 5000,
-    //     });
-    //   }
+        if (response) {
+          if(showToast.current) {
+            showToast.current.show({
+              severity: "success",
+              summary: "Success",
+              detail: "Successfully Created Topic",
+              life: 5000,
+            });
+          }
+        //   toast.current.show({
+        //     severity: "success",
+        //     summary: "Success",
+        //     detail: "Successfully Created Topic",
+        //     life: 5000,
+        //   });
+        }
+        setRefreshData((prev) => !prev);
+        resetForm();
+        onSubmitSuccess();
+      } catch (error) {
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: "There was an error creating topic",
+            life: 5000,
+          });
+        }
+        // toast.current.show({
+        //   severity: "error",
+        //   summary: "Error",
+        //   detail: "There was an error creating topic",
+        //   life: 5000,
+        // });
+      }
+    } else {
+      // The form is invalid, do not submit
+      setFormValid(false);
 
-    //   if (!postContent.trim()) {
-    //     toast.current.show({
-    //       severity: "warn",
-    //       summary: "Warning",
-    //       detail: "Please fill up the content",
-    //       life: 5000,
-    //     });
-    //   }
+      // Show a toast message for each empty field
+      if (!topicTitle.trim()) {
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please fill up the title",
+            life: 5000,
+          });
+        }
+        // toast.current.show({
+        //   severity: "warn",
+        //   summary: "Warning",
+        //   detail: "Please fill up the title",
+        //   life: 5000,
+        // });
+      }
 
-    //   if (!selectedCategory) {
-    //     toast.current.show({
-    //       severity: "warn",
-    //       summary: "Warning",
-    //       detail: "Please select a category",
-    //       life: 5000,
-    //     });
-    //   }
+      if (!topicDescription.trim()) {
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please fill up the content",
+            life: 5000,
+          });
+        }
+        // toast.current.show({
+        //   severity: "warn",
+        //   summary: "Warning",
+        //   detail: "Please fill up the content",
+        //   life: 5000,
+        // });
+      }
 
-    //   if (!checkedGuideLines) {
-    //     toast.current.show({
-    //       severity: "warn",
-    //       summary: "Warning",
-    //       detail: "Please agree to the guidelines",
-    //       life: 5000,
-    //     });
-    //   }
-    // }
+      if (!selectedCategory) {
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please select a category",
+            life: 5000,
+          });
+        }
+        // toast.current.show({
+        //   severity: "warn",
+        //   summary: "Warning",
+        //   detail: "Please select a category",
+        //   life: 5000,
+        // });
+      }
+
+      if (!checkedGuideLines) {
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please agree to the guidelines",
+            life: 5000,
+          });
+        }
+        // toast.current.show({
+        //   severity: "warn",
+        //   summary: "Warning",
+        //   detail: "Please agree to the guidelines",
+        //   life: 5000,
+        // });
+      }
+    }
   };
 
-  // const buttonClick = () => {
-  //   console.log("SEE HERE!!");
-  //   console.log("userid", userIdRef.userIdRef)
-  //   console.log("access token", userIdRef.accessToken)
-  // }
-
   return (
-    <>
+    <div className={styles.formContainer}>
       <Toast ref={toast} />
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className={styles.header}>
-          <h3>New Topic</h3>
-          <h5 className={styles.newPostMessage}>
+          <h5 className={styles.newTopicMessage}>
             Your post is tied to your account. Please read the guidelines and be
             responsible when creating a post on StarHire&apos;s forum to avoid
             post removal. Happy posting!
           </h5>
         </div>
-        <div className={styles.postTitleContainer}>
-          <h4 className={styles.postTitleHeader}>Title</h4>
+        <div className={styles.topicTitleContainer}>
+          <h4 className={styles.topicTitleHeader}>Title</h4>
           <InputTextarea
             rows={1}
             cols={75}
-            value={postTitle}
+            value={topicTitle}
             onChange={(e) => handleTopicTitleChange(e)}
             className={styles.textarea}
           />
         </div>
-        <div className={styles.postContentContainer}>
-          <h4 className={styles.postContentHeader}>Content</h4>
+        <div className={styles.topicDescriptionContainer}>
+          <h4 className={styles.topicDescriptionHeader}>Content</h4>
           <InputTextarea
             rows={10}
             cols={75}
-            value={postContent}
+            value={topicDescription}
             onChange={(e) => handleTopicDescriptionChange(e)}
             className={styles.textarea}
           />
           <div className={styles.characterCount}>
-            {maxCharacterCount - postContent.length} characters left
+            {maxCharacterCount - topicDescription.length} characters left
           </div>
         </div>
         <div className={styles.categoriesContainer}>
@@ -295,7 +331,7 @@ const CreateTopic = ({
           <Button label="Submit" size="small" rounded />
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
