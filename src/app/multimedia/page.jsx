@@ -45,21 +45,31 @@ const Multimedia = () =>  {
       setMounted(true);
     }, []);
 
-    const categoryTitleToId = {};
-    categories.forEach((category) => {
-      categoryTitleToId[category.categoryTitle] =
-        category.categoryId;
-    });
+    // const categoryTitleToId = {};
+    // categories.forEach((category) => {
+    //   categoryTitleToId[category.categoryTitle] =
+    //     category.categoryId;
+    // });
 
     useEffect(() => {
         const fetchData = async () => {
           try {
             const response = await getAllActiveCategoryPublic();
             const activeCategories = response.data;
-            const filteredResponse = response.data.map(category => category.categoryTitle);
+            const filteredResponse = response.data.map((category) => ({
+              categoryTitle: category.categoryTitle,
+            }));
             const myPostMenu = { categoryTitle: "My Posts" };
             filteredResponse.unshift(myPostMenu); // show 'My Posts' menu as first option
             setCategories(filteredResponse);
+
+            const categoryTitleToId = activeCategories.reduce(
+              (acc, category) => {
+                acc[category.categoryTitle] = category.categoryId;
+                return acc;
+              },
+              {}
+            );
             
             // Fetch topics for the selected categoryTitle, if applicable
             if (
@@ -71,6 +81,7 @@ const Multimedia = () =>  {
               const selectedCategory = activeCategories.find(c => c.categoryId === selectedCategoryId);
               if (selectedCategory) {
                 setTopics(selectedCategory.topics);
+                setForumGuideLinesByCategory(selectedCategory.forumGuidelines);
               }
             } else if (categoryTitle === "My Posts" && accessToken) {
               const response = await getUserTopics(
@@ -117,7 +128,7 @@ const Multimedia = () =>  {
        <>
          {mounted && (
            <>
-             <MediaQuery minWidth={1225}>
+             <MediaQuery minWidth={1}>
                <TopicDesktopView
                  categoryTitle={categoryTitle}
                  setCategoryTitle={setCategoryTitle}

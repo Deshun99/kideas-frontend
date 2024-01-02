@@ -36,7 +36,7 @@ export const getAllCategory = async (accessToken) => {
 
 export const getAllActiveCategoryPublic = async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category/active`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/category/public`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

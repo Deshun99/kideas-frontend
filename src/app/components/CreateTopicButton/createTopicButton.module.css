@@ -1,0 +1,27 @@
+.createTopicBtn {
+  border: #35acfe !important;
+  background-color: #35acfe !important;
+  color: #edf6f9 !important;
+}
+
+.createTopicBtn:hover {
+  border: #2196f3 !important;
+  background-color: #2196f3 !important;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.createTopicDialog {
+  max-width: 50vw;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+  .createTopicDialog {
+    max-width: 90vw;
+  }
+}
