@@ -1,25 +1,26 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "primereact/button";
 import styles from "./createTopicButton.module.css";
 // import CreatePost from "../CreatePost/CreatePost";
 import { Dialog } from "primereact/dialog";
 import CreateTopic from "../CreateTopic/createTopic";
+import { Toast } from "primereact/toast";
 
 const CreateTopicButton = ({
   userIdRef,
   accessToken,
-  forumCategories,
+  categories,
   setRefreshData,
 }) => {
-  const [visible, setVisible] = useState(false);
-
+  const [createTopicDialog, setCreateTopicDialog] = useState(false);
+  const toast = useRef(null);
   const handleOnClick = () => {
-    setVisible(true);
+    setCreateTopicDialog(true);
   };
 
   const onHideDialog = () => {
-    setVisible(false);
+    setCreateTopicDialog(false);
   };
 
   const handleFormSubmitSuccess = () => {
@@ -30,20 +31,20 @@ const CreateTopicButton = ({
 
   return (
     <>
-      {userIdRef &&
-        accessToken && ( // Only show button if userIdRef and accessToken are present
-          <Button
-            size="small"
-            rounded
-            className={styles.createTopicBtn}
-            label="Create Topic"
-            icon="pi pi-plus"
-            onClick={handleOnClick}
-          />
-        )}
+      <Toast ref={toast} />
+      {userIdRef && accessToken && (
+        <Button
+          size="small"
+          rounded
+          className={styles.createTopicBtn}
+          label="Create Topic"
+          icon="pi pi-plus"
+          onClick={handleOnClick}
+        />
+      )}
       <Dialog
         header="Create Topic"
-        visible={visible}
+        visible={createTopicDialog}
         onHide={onHideDialog}
         className={styles.createTopicDialog}
         draggable={false}
@@ -52,9 +53,10 @@ const CreateTopicButton = ({
         <CreateTopic
           userIdRef={userIdRef}
           accessToken={accessToken}
-          forumCategories={forumCategories}
-          onSubmitSuccess={handleFormSubmitSuccess}
+          categories={categories}
+          onSubmitSuccess={() => setCreateTopicDialog(false)}
           setRefreshData={setRefreshData}
+          showToast={toast}
         />
       </Dialog>
     </>

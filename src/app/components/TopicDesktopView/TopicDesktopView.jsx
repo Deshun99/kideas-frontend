@@ -2,6 +2,7 @@
 import CategoryMenu from "../CategoryMenu/CategoryMenu";
 import CreateTopicButton from "../CreateTopicButton/createTopicButton";
 import ForumGuidelinesCard from "../ForumGuidelinesCard/forumGuidelinesCard";
+import TopicPosts from "../TopicPosts/TopicPosts";
 import TopicSearchBar from "../TopicSearchBar/TopicSearchBar";
 import styles from "./topicDesktopView.module.css";
 
@@ -48,13 +49,20 @@ const TopicDesktopView = ({
             </div>
             <h2 className={styles.title}>{categoryTitle}</h2>
             <div className={styles.postsContainer}>
-              {/* <ForumPosts
-                forumPosts={forumPosts}
+              {/* <TopicPosts
+                topics={topics}
                 userIdRef={userIdRef}
                 accessToken={accessToken}
                 setRefreshData={setRefreshData}
                 searchQuery={searchQuery}
               /> */}
+              {topics.map((topic, index) => (
+                <div key={index} className={styles.topic}>
+                  <h3>{topic.topicId}</h3>
+                  <p>{topic.topicTitle}</p>
+                  {/* Render additional topic details here */}
+                </div>
+              ))}
             </div>
           </div>
           <div className={styles.guideLinesContainer}>

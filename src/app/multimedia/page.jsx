@@ -57,9 +57,12 @@ const Multimedia = () =>  {
             const response = await getAllActiveCategoryPublic();
             const activeCategories = response.data;
             const filteredResponse = response.data.map((category) => ({
+              categoryId: category.categoryId,
               categoryTitle: category.categoryTitle,
             }));
-            const myPostMenu = { categoryTitle: "My Posts" };
+            const myPostMenu = { 
+              categoryId: 0,
+              categoryTitle: "My Posts" };
             filteredResponse.unshift(myPostMenu); // show 'My Posts' menu as first option
             setCategories(filteredResponse);
 

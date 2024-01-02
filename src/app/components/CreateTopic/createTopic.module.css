@@ -1,21 +1,25 @@
+.formContainer {
+    font-family: 'Montserrat', sans-serif; 
+}
+
 .textarea {
 	width: 46vw !important;
 }
 
-.newPostMessage {
-  margin-top: 10px;
+.newTopicMessage {
+  margin-top: 5px;
 }
 
-.postTitleContainer,
-.postContentContainer,
+.header,
+.topicTitleContainer,
+.topicDescriptionContainer,
 .categoriesContainer,
-.anonymousContainer,
 .guideLinesContainer {
   margin-top: 20px;
 }
 
-.postTitleHeader,
-.postContentHeader,
+.topicTitleHeader,
+.topicDescriptionHeader,
 .categoriesHeader,
 .guideLinesHeader {
   margin-bottom: 5px;
@@ -35,13 +39,11 @@
 	margin-left: 5px;
 }
 
-.guideLines,
-.anonymous {
+.guideLines {
 	display: flex;
 }
 
-.guideLinesText,
-.anonymousText {
+.guideLinesText {
 	margin-left: 5px;
 }
 
