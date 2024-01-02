@@ -1,5 +1,7 @@
 "use client";
 import CategoryMenu from "../CategoryMenu/CategoryMenu";
+import CreateTopicButton from "../CreateTopicButton/createTopicButton";
+import ForumGuidelinesCard from "../ForumGuidelinesCard/forumGuidelinesCard";
 import TopicSearchBar from "../TopicSearchBar/TopicSearchBar";
 import styles from "./topicDesktopView.module.css";
 
@@ -36,12 +38,12 @@ const TopicDesktopView = ({
                 />
               </div>
               <div className={styles.createPostBtnContainer}>
-                {/* <ForumCreatePostButton
+                <CreateTopicButton
                   userIdRef={userIdRef}
                   accessToken={accessToken}
-                  forumCategories={forumCategories}
+                  categories={categories}
                   setRefreshData={setRefreshData}
-                /> */}
+                />
               </div>
             </div>
             <h2 className={styles.title}>{categoryTitle}</h2>
@@ -56,10 +58,10 @@ const TopicDesktopView = ({
             </div>
           </div>
           <div className={styles.guideLinesContainer}>
-            {/* <ForumGuidelinesCard
-              forumCategoryTitle={forumCategoryTitle}
+            <ForumGuidelinesCard
+              categoryTitle={categoryTitle}
               forumGuideLinesByCategory={forumGuideLinesByCategory}
-            /> */}
+            />
           </div>
         </div>
       </>
