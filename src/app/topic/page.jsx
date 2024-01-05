@@ -7,7 +7,7 @@ import { getAllActiveCategoryPublic } from "../api/category/route";
 import { getSortedTopics, getUserTopics } from "../api/topic/route";
 import TopicDesktopView from "../components/TopicDesktopView/TopicDesktopView";
 
-const Multimedia = () =>  {
+const Topic = () =>  {
     const session = useSession();
     const router = useRouter();
 
@@ -167,4 +167,4 @@ const Multimedia = () =>  {
      );
 }
 
-export default Multimedia;
+export default Topic;

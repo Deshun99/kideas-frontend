@@ -62,11 +62,31 @@ export const createTopic = async (topicData, accessToken) => {
     if (responseBody.statusCode === 404) {
       throw new Error(responseBody.message || "An error occurred");
     }
-
-    console.log("Tesla");
     return await responseBody;
   } catch (error) {
     console.log("There was a problem creating topic", error);
     throw error;
   }
 }
+
+export const deleteTopicByContentCreator = async (topicId, userId, accessToken) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/topic/delete/${topicId}/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    });
+    const responseBody = await res.json();
+
+    if (responseBody.statusCode === 404) {
+      throw new Error(responseBody.message || "An error occurred");
+    }
+    return await responseBody;
+  } catch (error) {
+    console.log("There was a problem creating topic", error);
+    throw error;
+  }
+};

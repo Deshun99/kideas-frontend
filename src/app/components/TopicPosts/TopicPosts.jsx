@@ -10,6 +10,8 @@ import Utility from "@/app/common/helper/utility";
 // import DeletePostCard from "../DeletePostCard/DeletePostCard";
 // import ReportPostCard from "../ReportPostCard/ReportPostCard";
 import { Badge } from "primereact/badge";
+import DeleteTopicCard from "../DeleteTopicCard/deleteTopicCard";
+import { useRouter } from "next/navigation";
 
 const TopicPosts = ({
   topics,
@@ -18,15 +20,28 @@ const TopicPosts = ({
   setRefreshData,
   searchQuery,
 }) => {
+  console.log("Topics array:", topics);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const router = useRouter();
 
   const [postData, setPostData] = useState("");
 
-  const filteredPosts = topics.filter((post) =>
-    post.forumPostTitle.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPosts = Array.isArray(topics)
+    ? topics.filter((post) =>
+        post.topicTitle.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
+  // State to track the number of displayed posts
+  const [displayedPostsCount, setDisplayedPostsCount] = useState(5); // Start with 5 posts
+  const postsToDisplay = filteredPosts.slice(0, displayedPostsCount);
+
+  // Function to load more posts
+  const loadTopicsLazy = () => {
+    setDisplayedPostsCount((prevCount) => prevCount + 5); // Load 5 more posts each time
+  };
 
   const formatRawDate = (rawDate) => {
     return moment(rawDate).format("DD MMMM YYYY, hh:mm A");
@@ -59,10 +74,14 @@ const TopicPosts = ({
     setReportDialogOpen(false);
   };
 
+  const multimediaPage = (topic) => {
+    router.push(`/topic/${topic.topicId}`);
+  }
+
   const truncatedMessage = (data) => {
-    return data.forumPostMessage.length > 500
-      ? data.forumPostMessage.substring(0, 500) + " ..."
-      : data.forumPostMessage;
+    return data.topicDescription.length > 500
+      ? data.topicDescription.substring(0, 500) + " ..."
+      : data.topicDescription;
   };
 
   const itemTemplate = (data) => {
@@ -71,9 +90,10 @@ const TopicPosts = ({
         <div className={styles.postTitle}>
           <div className={styles.postTitleText}>{data.topicTitle}</div>
           <div className={styles.postTitleButtonContainer}>
-            {/* {data.forumPostStatus === "Pending" && (
-              <div className={styles.pendingTag}>Pending </div>
+            {data.status === "Inactive" && (
+              <div className={styles.inactiveTag}>Inactive</div>
             )}
+            {/*
             {data.jobSeeker.userId !== userIdRef && (
               <Button
                 size="small"
@@ -82,8 +102,8 @@ const TopicPosts = ({
                 onClick={() => openReportDialog(data)}
                 className={styles.reportButton}
               />
-            )}
-            {data.jobSeeker.userId === userIdRef && (
+            )} */}
+            {data.user.userId === userIdRef && (
               <>
                 <Button
                   size="small"
@@ -93,34 +113,20 @@ const TopicPosts = ({
                   className={styles.deleteButton}
                 />
               </>
-            )} */}
+            )}
           </div>
         </div>
-        <div className={styles.userId}>
-          {data.isAnonymous === false
-            ? `Posted By: ${data.jobSeeker.userName}`
-            : "Posted By: Anonymous"}
-        </div>
+        <div className={styles.userId}>Posted By: {data.user.userName}</div>
         <div className={styles.postInfo}>
-          <div className={styles.idTag}>#{data.forumPostId}</div>
-          <div
-            className={`${styles.categoryTag} ${
-              data.forumCategory.forumCategoryTitle === "Events"
-                ? styles.categoryTagEvents
-                : data.forumCategory.forumCategoryTitle === "Miscellaneous"
-                ? styles.categoryTagMiscellaneous
-                : data.forumCategory.forumCategoryTitle === "Confessions"
-                ? styles.categoryTagConfessions
-                : styles.categoryTagCareer
-            }`}
-          >
-            <p>{data.forumCategory.forumCategoryTitle}</p>
+          <div className={styles.idTag}>#{data.topicId}</div>
+          <div className={styles.categoryTag}>
+            <p>{data.category.categoryTitle}</p>
           </div>
         </div>
 
         <div className={styles.content}>
           {truncatedMessage(data)}
-          {data.forumPostMessage.length > 500 && (
+          {data.topicDescription.length > 500 && (
             <span className={styles.showMore} onClick={() => openDialog(data)}>
               Show More
             </span>
@@ -131,16 +137,26 @@ const TopicPosts = ({
           <div className={styles.dateTimeText}>
             {Utility.timeAgo(data.createdAt)}
           </div>
-          {data.forumPostStatus !== "Pending" && (
-            <div className={styles.commentInfo}>
-              <Badge value={data?.forumComments.length} severity="info"></Badge>
+          {data.status !== "Inactive" && (
+            // <div className={styles.commentInfo}>
+            //   <Badge value={data?.multimedias.length} severity="info"></Badge>
+            //   <Button
+            //     label="View Videos"
+            //     icon="pi pi-video"
+            //     rounded
+            //     onClick={() => multimediaPage(data)}
+            //     className={styles.multimediaButton}>
+            //   </Button>
+            // </div>
+            <div className={styles.videoInfo}>
               <Button
-                size="small"
-                icon="pi pi-comments"
                 rounded
-                onClick={() => openDialog(data)}
-                className={styles.commentButton}
-              ></Button>
+                onClick={() => multimediaPage(data)}
+                className={styles.multimediaButton}
+              >
+                <Badge value={data?.multimedias.length} severity="info"></Badge>
+                Videos
+              </Button>
             </div>
           )}
         </div>
@@ -154,7 +170,8 @@ const TopicPosts = ({
         <DataScroller
           value={filteredPosts}
           itemTemplate={itemTemplate}
-          rows={5}
+          lazy
+          onLazyLoad={loadTopicsLazy}
           inline
           scrollHeight="900px"
           header="Scroll Down to Load More"
@@ -162,8 +179,8 @@ const TopicPosts = ({
         />
       </div>
 
-      {/* <DeletePostCard
-        forumPost={postData}
+      <DeleteTopicCard
+        topic={postData}
         hideDeleteDialog={hideDeleteDialog}
         deleteDialogOpen={deleteDialogOpen}
         userIdRef={userIdRef}
@@ -172,7 +189,7 @@ const TopicPosts = ({
         hideCommentDialog={hideDialog}
       />
 
-      <ReportPostCard
+      {/* <ReportPostCard
         forumPost={postData}
         hideReportDialog={hideReportDialog}
         reportDialogOpen={reportDialogOpen}
