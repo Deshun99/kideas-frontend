@@ -1,4 +1,5 @@
 .postContainer {
+  font-family: 'Montserrat', sans-serif; 
 }
 
 .postTitle {
@@ -23,7 +24,7 @@
 
 .idTag {
   padding: 5px 10px; 
-  background-color: #082948; 
+  background-color: #03070b; 
   color: white; 
   border-radius: 20px;
   display: flex;
@@ -34,6 +35,7 @@
 .categoryTag {
   margin-left: 10px;
   padding: 5px 10px; 
+  background-color: #082948;
   color: white; 
   border-radius: 20px;
   display: flex;
@@ -44,6 +46,18 @@
 .pendingTag {
   padding: 5px 10px; 
   background-color: rgb(224, 105, 7); 
+  color: white; 
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin-left: 10px;
+  height: 30px;
+}
+
+.inactiveTag {
+  padding: 5px 10px; 
+  background-color: rgb(255, 0, 0); 
   color: white; 
   border-radius: 20px;
   display: flex;
@@ -120,6 +134,23 @@
   height: 30px !important;
 }
 
+.videoInfo {
+  margin-top: 5px;
+  align-self: flex-end; 
+  background-color: rgb(212, 18, 212); 
+  color: white; 
+  border-radius: 20px;
+  font-size: 10px;
+}
+
+.multimediaButton {
+  background: transparent !important;
+  border: transparent !important;
+  width: 120px !important;
+  height: 30px !important;
+}
+
+.multimediaButton:hover,
 .commentButton:hover,
 .deleteButton:hover {
   border: #2196f3 !important;

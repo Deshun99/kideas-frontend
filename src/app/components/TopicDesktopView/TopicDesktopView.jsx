@@ -49,20 +49,13 @@ const TopicDesktopView = ({
             </div>
             <h2 className={styles.title}>{categoryTitle}</h2>
             <div className={styles.postsContainer}>
-              {/* <TopicPosts
+              <TopicPosts
                 topics={topics}
                 userIdRef={userIdRef}
                 accessToken={accessToken}
                 setRefreshData={setRefreshData}
                 searchQuery={searchQuery}
-              /> */}
-              {topics.map((topic, index) => (
-                <div key={index} className={styles.topic}>
-                  <h3>{topic.topicId}</h3>
-                  <p>{topic.topicTitle}</p>
-                  {/* Render additional topic details here */}
-                </div>
-              ))}
+              />
             </div>
           </div>
           <div className={styles.guideLinesContainer}>
