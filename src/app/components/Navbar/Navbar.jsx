@@ -16,21 +16,21 @@ import { ThemeContext } from "@/app/context/ThemeContext";
 const MENU_LIST_CONTENT_CREATOR = [
   { text: "Home", href: "/" },
   { text: "Chat", href: "/chat" },
-  { text: "Multimedia", href: "/multimedia" },
+  { text: "Topic", href: "/topic" },
   { text: "My Topics", href: "/myTopic" },
 ];
 
 const MENU_LIST_ADMIN = [
   { text: "Home", href: "/" },
   { text: "Chat", href: "/chat" },
-  { text: "Multimedia", href: "/multimedia" },
+  { text: "Topic", href: "/topic" },
   { text: "User Management", href: "/userManagement" },
   { text: "Topic Management", href: "/topicManagement" },
 ];
 
 const MENU_LIST_VISITOR = [
     { text: "Home", href: "/" }, 
-    { text: "Multimedia", href: "/multimedia" },
+    { text: "Topic", href: "/topic" },
 ];
 
 const Navbar = () => {
