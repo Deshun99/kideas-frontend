@@ -5,7 +5,6 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { RadioButton } from "primereact/radiobutton";
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
-// import { createPost } from "@/app/api/forum/route";
 import { Toast } from "primereact/toast";
 import Enums from "@/app/common/enums/enums";
 import { createTopic } from "@/app/api/topic/route";
@@ -248,7 +247,7 @@ const CreateTopic = ({
         <div className={styles.header}>
           <h5 className={styles.newTopicMessage}>
             Your post is tied to your account. Please read the guidelines and be
-            responsible when creating a post on StarHire&apos;s forum to avoid
+            responsible when creating a post on Kideas&apos; forum to avoid
             post removal. Happy posting!
           </h5>
         </div>

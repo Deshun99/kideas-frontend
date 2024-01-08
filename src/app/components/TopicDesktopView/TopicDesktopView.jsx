@@ -54,6 +54,7 @@ const TopicDesktopView = ({
                 userIdRef={userIdRef}
                 accessToken={accessToken}
                 setRefreshData={setRefreshData}
+                categories={categories}
                 searchQuery={searchQuery}
               />
             </div>

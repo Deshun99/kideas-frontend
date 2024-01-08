@@ -126,6 +126,7 @@
 
 .commentButton, 
 .deleteButton,
+.editButton,
 .reportButton {
   background: transparent !important;
   color: black !important;
@@ -152,6 +153,7 @@
 
 .multimediaButton:hover,
 .commentButton:hover,
+.editButton:hover,
 .deleteButton:hover {
   border: #2196f3 !important;
   background-color: #2196f3 !important;
