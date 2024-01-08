@@ -119,13 +119,7 @@ const TopicPosts = ({
             )} */}
             {data.user.userId === userIdRef && (
               <>
-                {/* <Button
-                  size="small"
-                  icon="pi pi-trash"
-                  rounded
-                  onClick={() => openDeleteDialog(data)}
-                  className={styles.deleteButton}
-                /> */}
+                {/* */}
                 <Button
                   size="small"
                   icon="pi pi-pencil"

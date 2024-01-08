@@ -1,0 +1,108 @@
+.editTopicDialog {
+  max-width: 50vw;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+  .editTopicDialog {
+    max-width: 90vw;
+  }
+}
+
+.formContainer {
+    font-family: 'Montserrat', sans-serif; 
+}
+
+.textarea {
+	width: 46vw !important;
+}
+
+.newTopicMessage {
+  margin-top: 5px;
+}
+
+.header,
+.topicTitleContainer,
+.topicDescriptionContainer,
+.categoriesContainer,
+.statusContainer,
+.guideLinesContainer {
+  margin-top: 20px;
+}
+
+.topicTitleHeader,
+.topicDescriptionHeader,
+.categoriesHeader,
+.statusHeader,
+.guideLinesHeader {
+  margin-bottom: 5px;
+}
+
+.categories {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.categoryLabelContainer:not(:first-child) {
+  margin-left: 10px;
+}
+
+.categoryLabel {
+	margin-left: 5px;
+}
+
+.statusLabel,
+.statusLabel1 {
+    margin-left: 5px
+}
+
+.statusOption1 {
+   margin-left: 10px;
+}
+
+.guideLines {
+	display: flex;
+}
+
+.guideLinesText {
+	margin-left: 5px;
+}
+
+.submitButtonContainer {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100%;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .textarea {
+    width: 75vw !important;
+  }
+
+  .categories {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+
+  .categoryLabelContainer {
+    margin-top: 5px;
+  }
+
+  .categoryLabelContainer:not(:first-child) {
+    margin-left: 0px;
+  }
+}

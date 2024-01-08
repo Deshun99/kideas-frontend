@@ -9,10 +9,41 @@ import { Card } from "primereact/card";
 import HumanIcon from "../../../../public/icon.png";
 import Image from "next/image";
 import { DataScroller } from "primereact/datascroller";
+import CreateMultimediaCard from "@/app/components/CreateMultimediaCard/createMultimediaCard";
+import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 
 const TopicDetails = ({ topicId }) => {
   const session = useSession();
   const router = useRouter();
+  const [refreshData, setRefreshData] = useState(false);
+  const toast = useRef(null);
+
+  const roleRef =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.role;
+
+  const accessToken =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.accessToken;
+
+  const userIdRef =
+    session.status === "authenticated" &&
+    session.data &&
+    session.data.user.userId;
+
+  const [topic, setTopic] = useState(null);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+
+  const openCreateDialog = () => {
+    setCreateDialogOpen(true);
+  }
+
+  const hideCreateDialog = () => {
+    setCreateDialogOpen(false);
+  }
 
   //Boilerplate code
   const [products, setProducts] = useState([]);
@@ -31,21 +62,6 @@ const TopicDetails = ({ topicId }) => {
     );
   };
 
-  const roleRef =
-    session.status === "authenticated" &&
-    session.data &&
-    session.data.user.role;
-
-  const accessToken =
-    session.status === "authenticated" &&
-    session.data &&
-    session.data.user.accessToken;
-
-  const userId =
-    session.status === "authenticated" &&
-    session.data &&
-    session.data.user.userId;
-
   const [mounted, setMounted] = useState(false);
   const playerWrapperRef = useRef();
 
@@ -61,10 +77,13 @@ const TopicDetails = ({ topicId }) => {
     }
   }, [mounted]); // Dependency on mounted to make sure ReactPlayer has been rendered
 
-  useEffect(() => {}, [topicId]);
+  useEffect(() => {
+  
+  }, [topicId]);
 
   return (
     <>
+      <Toast ref={toast} />
       {mounted && (
         <MediaQuery minWidth={1200}>
           <div className={styles.multimediaContainer}>
@@ -72,7 +91,10 @@ const TopicDetails = ({ topicId }) => {
               <div className={styles.playerWrapper} ref={playerWrapperRef}>
                 <ReactPlayer
                   className={styles.reactPlayer}
-                  url="https://kideas-upload.s3.ap-southeast-2.amazonaws.com/StarHire+Demo+Video.mp4"
+                  url={[
+                    "https://www.youtube.com/watch?v=11cta61wi0g",
+                    // "https://kideas-upload.s3.ap-southeast-2.amazonaws.com/StarHire+Demo+Video.mp4",
+                  ]}
                   controls={true}
                   width="100%"
                   height="100%"
@@ -108,10 +130,15 @@ const TopicDetails = ({ topicId }) => {
                   </p>
                 </div>
               </Card>
-              <Card
-                title="3,316 Comments"
-                className={styles.multimediaColumn1}
-              ></Card>
+              <Card title="3,316 Comments" className={styles.multimediaColumn1}>
+                <Button
+                  size="small"
+                  icon="pi pi-pencil"
+                  rounded
+                  onClick={openCreateDialog}
+                  className={styles.editButton}
+                />
+              </Card>
             </div>
             <div className={styles.multimediaRightColumn}>
               <DataScroller
@@ -126,6 +153,15 @@ const TopicDetails = ({ topicId }) => {
           </div>
         </MediaQuery>
       )}
+      <CreateMultimediaCard
+        hideCreateDialog={hideCreateDialog}
+        openCreateDialog={createDialogOpen}
+        userIdRef={userIdRef}
+        topicIdRef={topicId}
+        accessToken={accessToken}
+        setRefreshData={setRefreshData}
+        onSubmitSuccess={() => setCreateDialogOpen(false)}
+      />
     </>
   );
 };

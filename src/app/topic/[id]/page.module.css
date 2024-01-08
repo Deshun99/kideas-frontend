@@ -13,16 +13,16 @@
 .multimediaLeftColumn {
   flex: 1; /* Allows the column to grow and take up 80% of the space */
   max-width: 77%; /* Sets the maximum width to 80% */
-  border-style: solid;
+  /* border-style: solid;
   border-width: 1px; 
-  border-color: black;
+  border-color: black; */
 }
 
 .multimediaRightColumn {
   flex: 0 0 23%; /* takes up 20% of the multimediaContainer */
-  border-style: solid;
+  /* border-style: solid;
   border-width: 1px; 
-  border-color: black;
+  border-color: black; */
 }
 
 .playerWrapper {
