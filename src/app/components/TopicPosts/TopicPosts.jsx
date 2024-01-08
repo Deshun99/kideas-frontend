@@ -5,26 +5,31 @@ import styles from "./TopicPosts.module.css";
 import moment from "moment";
 import { Dialog } from "primereact/dialog";
 // import CreateComment from "../CreateCommentModal/CreateComment";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Utility from "@/app/common/helper/utility";
 // import DeletePostCard from "../DeletePostCard/DeletePostCard";
 // import ReportPostCard from "../ReportPostCard/ReportPostCard";
 import { Badge } from "primereact/badge";
 import DeleteTopicCard from "../DeleteTopicCard/deleteTopicCard";
 import { useRouter } from "next/navigation";
+import EditTopicCard from "../EditTopicCard/editTopicCard";
+import { Toast } from "primereact/toast";
 
 const TopicPosts = ({
   topics,
   userIdRef,
   accessToken,
   setRefreshData,
+  categories,
   searchQuery,
 }) => {
   console.log("Topics array:", topics);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const [editTopicDialogOpen, setEditTopicDialogOpen] = useState(false);
   const router = useRouter();
+  const toast = useRef(null);
 
   const [postData, setPostData] = useState("");
 
@@ -74,6 +79,15 @@ const TopicPosts = ({
     setReportDialogOpen(false);
   };
 
+  const openEditDialog = (data) => {
+    setEditTopicDialogOpen(true);
+    setPostData(data);
+  }
+
+  const hideEditDialog = () => {
+    setEditTopicDialogOpen(false);
+  }
+
   const multimediaPage = (topic) => {
     router.push(`/topic/${topic.topicId}`);
   }
@@ -105,12 +119,19 @@ const TopicPosts = ({
             )} */}
             {data.user.userId === userIdRef && (
               <>
-                <Button
+                {/* <Button
                   size="small"
                   icon="pi pi-trash"
                   rounded
                   onClick={() => openDeleteDialog(data)}
                   className={styles.deleteButton}
+                /> */}
+                <Button
+                  size="small"
+                  icon="pi pi-pencil"
+                  rounded
+                  onClick={() => openEditDialog(data)}
+                  className={styles.editButton}
                 />
               </>
             )}
@@ -166,6 +187,7 @@ const TopicPosts = ({
 
   return (
     <>
+      <Toast ref={toast} />
       <div className={styles.card}>
         <DataScroller
           value={filteredPosts}
@@ -187,6 +209,19 @@ const TopicPosts = ({
         accessToken={accessToken}
         setRefreshData={setRefreshData}
         hideCommentDialog={hideDialog}
+      />
+
+      <EditTopicCard
+        topic={postData}
+        hideEditDialog={hideEditDialog}
+        editTopicDialogOpen={editTopicDialogOpen}
+        categories={categories}
+        userIdRef={userIdRef}
+        accessToken={accessToken}
+        setRefreshData={setRefreshData}
+        hideCommentDialog={hideEditDialog}
+        onSubmitSuccess={() => setEditTopicDialogOpen(false)}
+        showToast={toast}
       />
 
       {/* <ReportPostCard

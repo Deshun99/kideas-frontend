@@ -69,6 +69,28 @@ export const createTopic = async (topicData, accessToken) => {
   }
 }
 
+export const updateTopic = async (topicId, topicData, accessToken) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/topic/${topicId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(topicData),
+    });
+    const responseBody = await res.json();
+
+    if (responseBody.statusCode === 404) {
+      throw new Error(responseBody.message || "An error occurred");
+    }
+    return await responseBody;
+  } catch (error) {
+    console.log("There was a problem editing topic", error);
+    throw error;
+  }
+};
+
 export const deleteTopicByContentCreator = async (topicId, userId, accessToken) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/topic/delete/${topicId}/${userId}`, {
