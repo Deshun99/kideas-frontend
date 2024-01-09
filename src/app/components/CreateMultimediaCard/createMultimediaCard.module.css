@@ -25,20 +25,29 @@
 }
 
 .header,
-.topicTitleContainer,
-.topicDescriptionContainer,
+.multimediaTitleContainer,
+.multimediaDescriptionContainer,
 .categoriesContainer,
 .statusContainer,
+.thumbnailUrlContainer,
+.videoLinkUrlContainer
 .guideLinesContainer {
   margin-top: 20px;
 }
 
-.topicTitleHeader,
-.topicDescriptionHeader,
+.multimediaTitleHeader,
+.multimediaDescriptionHeader,
 .categoriesHeader,
+.thumbnailUrlHeader,
+.videoLinkUrlHeader,
 .statusHeader,
 .guideLinesHeader {
   margin-bottom: 5px;
+}
+
+.uploadArea {
+  margin-bottom: 5px;
+  font-family: 'Montserrat', sans-serif; 
 }
 
 .categories {
