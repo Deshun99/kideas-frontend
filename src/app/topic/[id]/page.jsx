@@ -12,10 +12,12 @@ import { DataScroller } from "primereact/datascroller";
 import CreateMultimediaCard from "@/app/components/CreateMultimediaCard/createMultimediaCard";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
+import { getOneTopic } from "@/app/api/topic/route";
 
-const TopicDetails = ({ topicId }) => {
+const TopicDetails = ({ params }) => { 
   const session = useSession();
   const router = useRouter();
+  
   const [refreshData, setRefreshData] = useState(false);
   const toast = useRef(null);
 
@@ -37,13 +39,15 @@ const TopicDetails = ({ topicId }) => {
   const [topic, setTopic] = useState(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
+  console.log(params.id);
+
   const openCreateDialog = () => {
     setCreateDialogOpen(true);
-  }
+  };
 
   const hideCreateDialog = () => {
     setCreateDialogOpen(false);
-  }
+  };
 
   //Boilerplate code
   const [products, setProducts] = useState([]);
@@ -52,11 +56,16 @@ const TopicDetails = ({ topicId }) => {
   const itemTemplate = (data) => {
     return (
       <div className={styles.thumbnailContainer}>
-        <div className={styles.thumbnailImage}>
-
+        <div className={styles.thumbnailImageContainer}>
+          <img
+            src={data.thumbnailUrl}
+            alt="Profile Picture"
+            className={styles.thumbnailImage}
+          />
         </div>
         <div className={styles.thumbnailContent}>
-
+          <h5 className={styles.thumbnailTitle}>{data.multimediaTitle}</h5>
+          <p className={styles.thumbnailUsername}>{data.user.userName}</p>
         </div>
       </div>
     );
@@ -78,14 +87,23 @@ const TopicDetails = ({ topicId }) => {
   }, [mounted]); // Dependency on mounted to make sure ReactPlayer has been rendered
 
   useEffect(() => {
-  
-  }, [topicId]);
+    if(params) {
+      getOneTopic(params.id)
+      .then((topic) => {
+        console.log(topic.data);
+        setTopic(topic.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      })
+    }
+  }, [params]);
 
   return (
     <>
       <Toast ref={toast} />
       {mounted && (
-        <MediaQuery minWidth={1200}>
+        <MediaQuery minWidth={1}>
           <div className={styles.multimediaContainer}>
             <div className={styles.multimediaLeftColumn}>
               <div className={styles.playerWrapper} ref={playerWrapperRef}>
@@ -130,20 +148,23 @@ const TopicDetails = ({ topicId }) => {
                   </p>
                 </div>
               </Card>
-              <Card title="3,316 Comments" className={styles.multimediaColumn1}>
-                <Button
-                  size="small"
-                  icon="pi pi-pencil"
-                  rounded
-                  onClick={openCreateDialog}
-                  className={styles.editButton}
-                />
-              </Card>
+              <Card
+                title="3,316 Comments"
+                className={styles.multimediaColumn1}
+              ></Card>
             </div>
             <div className={styles.multimediaRightColumn}>
+              <Button
+                size="small"
+                icon="pi pi-plus"
+                label="Create Multimedia"
+                rounded
+                onClick={openCreateDialog}
+                className={styles.createMultimediaBtn}
+              />
               <DataScroller
                 ref={ds}
-                value={products}
+                value={topic?.multimedias}
                 itemTemplate={itemTemplate}
                 rows={5}
                 loader
@@ -157,10 +178,11 @@ const TopicDetails = ({ topicId }) => {
         hideCreateDialog={hideCreateDialog}
         openCreateDialog={createDialogOpen}
         userIdRef={userIdRef}
-        topicIdRef={topicId}
+        topicIdRef={params.id}
         accessToken={accessToken}
         setRefreshData={setRefreshData}
         onSubmitSuccess={() => setCreateDialogOpen(false)}
+        showToast={toast}
       />
     </>
   );
