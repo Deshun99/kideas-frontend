@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import MediaQuery, { useMediaQuery } from "react-responsive";
@@ -13,11 +13,12 @@ import CreateMultimediaCard from "@/app/components/CreateMultimediaCard/createMu
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { getOneTopic } from "@/app/api/topic/route";
+import MultimediaSearchBar from "@/app/components/MultimediaSearchBar/multimediaSearchBar";
 
-const TopicDetails = ({ params }) => { 
+const TopicDetails = ({ params }) => {
   const session = useSession();
   const router = useRouter();
-  
+
   const [refreshData, setRefreshData] = useState(false);
   const toast = useRef(null);
 
@@ -39,7 +40,11 @@ const TopicDetails = ({ params }) => {
   const [topic, setTopic] = useState(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
-  console.log(params.id);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchQueryChange = (query) => {
+    setSearchQuery(query);
+  };
 
   const openCreateDialog = () => {
     setCreateDialogOpen(true);
@@ -50,12 +55,36 @@ const TopicDetails = ({ params }) => {
   };
 
   //Boilerplate code
-  const [products, setProducts] = useState([]);
+  const [selectedMultimedia, setSelectedMultimedia] = useState(null);
   const ds = useRef(null);
 
+  // Filter multimedia items based on search query
+  const filteredMultimedias = useMemo(() => {
+    if (!topic || !topic.multimedias) return [];
+
+    return topic.multimedias.filter((multimedia) =>
+      multimedia.multimediaTitle
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+  }, [topic, searchQuery]);
+
   const itemTemplate = (data) => {
+    const isSelected =
+      selectedMultimedia &&
+      selectedMultimedia.multimediaId === data.multimediaId;
+
+    const handleItemClick = () => {
+      console.log("Item clicked:", data); // Log the clicked item
+      setSelectedMultimedia(data);
+    };
     return (
-      <div className={styles.thumbnailContainer}>
+      <div
+        className={`${styles.thumbnailContainer} ${
+          isSelected ? styles.selectedItem : ""
+        }`}
+        onClick={handleItemClick}
+      >
         <div className={styles.thumbnailImageContainer}>
           <img
             src={data.thumbnailUrl}
@@ -64,7 +93,7 @@ const TopicDetails = ({ params }) => {
           />
         </div>
         <div className={styles.thumbnailContent}>
-          <h5 className={styles.thumbnailTitle}>{data.multimediaTitle}</h5>
+          <h4 className={styles.thumbnailTitle}>{data.multimediaTitle}</h4>
           <p className={styles.thumbnailUsername}>{data.user.userName}</p>
         </div>
       </div>
@@ -87,15 +116,22 @@ const TopicDetails = ({ params }) => {
   }, [mounted]); // Dependency on mounted to make sure ReactPlayer has been rendered
 
   useEffect(() => {
-    if(params) {
+    if (params) {
       getOneTopic(params.id)
-      .then((topic) => {
-        console.log(topic.data);
-        setTopic(topic.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user:", error);
-      })
+        .then((topic) => {
+          console.log(topic.data);
+          setTopic(topic.data);
+
+          // Check if multimedias array is present and has more than 0 items
+          if (topic.data.multimedias && topic.data.multimedias.length > 0) {
+            setSelectedMultimedia(topic.data.multimedias[0]); // Set the first multimedia item
+          } else {
+            setSelectedMultimedia(null); // Set to null if no multimedia items are available
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching topic:", error);
+        });
     }
   }, [params]);
 
@@ -109,10 +145,9 @@ const TopicDetails = ({ params }) => {
               <div className={styles.playerWrapper} ref={playerWrapperRef}>
                 <ReactPlayer
                   className={styles.reactPlayer}
-                  url={[
-                    "https://www.youtube.com/watch?v=11cta61wi0g",
-                    // "https://kideas-upload.s3.ap-southeast-2.amazonaws.com/StarHire+Demo+Video.mp4",
-                  ]}
+                  url={
+                    selectedMultimedia ? [selectedMultimedia.videoLinkUrl] : []
+                  }
                   controls={true}
                   width="100%"
                   height="100%"
@@ -126,7 +161,11 @@ const TopicDetails = ({ params }) => {
                 />
               </div>
               <Card
-                title="Test Video to test whether things are functioning as normal"
+                title={
+                  selectedMultimedia
+                    ? selectedMultimedia.multimediaTitle
+                    : "Empty Title"
+                }
                 className={styles.multimediaColumn1}
               >
                 <div className={styles.imageContainer}>
@@ -135,16 +174,21 @@ const TopicDetails = ({ params }) => {
                     alt="Profile Picture"
                     className={styles.avatar}
                   />
-                  <p className="m-0">Lorem Ipsum</p>
+                  <p className="m-0">
+                    {selectedMultimedia
+                      ? selectedMultimedia.user.userName
+                      : "Username"}
+                  </p>
                 </div>
                 <div className={styles.descriptionContainer}>
-                  <h5 className="m-0">Posted: 10 months ago</h5>
+                  <h5 className="m-0">
+                    Posted:{" "}
+                    {selectedMultimedia ? selectedMultimedia.createdAt : "Date"}
+                  </h5>
                   <p className="m-0">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Inventore sed consequuntur error repudiandae numquam
-                    deserunt quisquam repellat libero asperiores earum nam
-                    nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
+                    {selectedMultimedia
+                      ? selectedMultimedia.multimediaDescription
+                      : "Description"}
                   </p>
                 </div>
               </Card>
@@ -162,13 +206,18 @@ const TopicDetails = ({ params }) => {
                 onClick={openCreateDialog}
                 className={styles.createMultimediaBtn}
               />
+              <MultimediaSearchBar
+                onSearchQueryChange={handleSearchQueryChange}
+                searchQuery={searchQuery}
+              />
               <DataScroller
                 ref={ds}
-                value={topic?.multimedias}
+                value={filteredMultimedias}
                 itemTemplate={itemTemplate}
                 rows={5}
                 loader
-                header="Click Load Button at Footer to Load More"
+                header=""
+                grid
               />
             </div>
           </div>

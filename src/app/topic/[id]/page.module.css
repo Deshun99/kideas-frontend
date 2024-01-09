@@ -93,9 +93,20 @@
   align-items: flex-start;
   font-family: 'Montserrat', sans-serif;
   margin-bottom: 10px;
+  width: 100%;
+  height: auto; 
+  width: 300px; /* Fixed width */
+  
 }
 
+.selectedItem {
+  background-color: #d3d3d3;
+  border-radius: 5px; /* or any other style you prefer */
+}
 
+.thumbnailContainer:hover {
+  cursor: pointer;
+}
 
 .thumbnailImage {
   width: 160px;
@@ -114,6 +125,12 @@
   overflow: hidden;
 }
 
+.thumbnailTitle, .thumbnailUsername {
+  white-space: nowrap; /* Keep titles in one line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add an ellipsis to text that overflows */
+}
+
 .thumbnailTitle {
   font-weight: bold;
   margin-right: 5px; 
@@ -121,5 +138,5 @@
 }
 
 .thumbnailUsername {
-  
+  margin-right: 5px;
 }
