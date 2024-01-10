@@ -39,7 +39,6 @@ const EditTopicCard = ({
     topicTitle: "",
     topicDescription: "",
     status: "",
-    createdAt: new Date(),
     categoryId: "",
     userId: userIdRef,
   });
@@ -90,7 +89,6 @@ const EditTopicCard = ({
 
   useEffect(() => {
     if (topic) {
-      console.log(topic.category.categoryId);
       setTopicTitle(topic.topicTitle || "");
       setTopicDescription(topic.topicDescription || "");
       setSelectedCategory(topic.category.categoryTitle || "");

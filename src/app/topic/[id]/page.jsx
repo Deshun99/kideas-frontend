@@ -14,6 +14,9 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { getOneTopic } from "@/app/api/topic/route";
 import MultimediaSearchBar from "@/app/components/MultimediaSearchBar/multimediaSearchBar";
+import Utility from "@/app/common/helper/utility";
+import { Skeleton } from "primereact/skeleton";
+import EditMultimediaCard from "@/app/components/EditMultimediaCard/editMultimediaCard";
 
 const TopicDetails = ({ params }) => {
   const session = useSession();
@@ -39,6 +42,7 @@ const TopicDetails = ({ params }) => {
 
   const [topic, setTopic] = useState(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -52,6 +56,19 @@ const TopicDetails = ({ params }) => {
 
   const hideCreateDialog = () => {
     setCreateDialogOpen(false);
+  };
+
+  const openEditDialog = () => {
+    setEditDialogOpen(true);
+  };
+
+  const hideEditDialog = () => {
+    setEditDialogOpen(false);
+  };
+
+  const handleMultimediaUpdate = (updatedMultimedia) => {
+    setSelectedMultimedia(updatedMultimedia);
+    setRefreshData((prev) => !prev); // Assuming this triggers a re-fetch or update of the data.
   };
 
   //Boilerplate code
@@ -135,6 +152,20 @@ const TopicDetails = ({ params }) => {
     }
   }, [params]);
 
+  useEffect(() => {
+    // When selectedMultimedia changes, update the corresponding item in the list
+    if (selectedMultimedia && topic?.multimedias) {
+      setTopic((currentTopic) => {
+        const updatedMultimedias = currentTopic.multimedias.map((item) =>
+          item.multimediaId === selectedMultimedia.multimediaId
+            ? selectedMultimedia
+            : item
+        );
+        return { ...currentTopic, multimedias: updatedMultimedias };
+      });
+    }
+  }, [selectedMultimedia]);
+
   return (
     <>
       <Toast ref={toast} />
@@ -142,70 +173,97 @@ const TopicDetails = ({ params }) => {
         <MediaQuery minWidth={1}>
           <div className={styles.multimediaContainer}>
             <div className={styles.multimediaLeftColumn}>
-              <div className={styles.playerWrapper} ref={playerWrapperRef}>
-                <ReactPlayer
-                  className={styles.reactPlayer}
-                  url={
-                    selectedMultimedia ? [selectedMultimedia.videoLinkUrl] : []
-                  }
-                  controls={true}
-                  width="100%"
-                  height="100%"
-                  config={{
-                    file: {
-                      attributes: {
-                        controlsList: "nodownload", // This will work for browsers that support it
-                      },
-                    },
-                  }}
-                />
-              </div>
-              <Card
-                title={
-                  selectedMultimedia
-                    ? selectedMultimedia.multimediaTitle
-                    : "Empty Title"
-                }
-                className={styles.multimediaColumn1}
-              >
-                <div className={styles.imageContainer}>
-                  <Image
-                    src={HumanIcon}
-                    alt="Profile Picture"
-                    className={styles.avatar}
-                  />
-                  <p className="m-0">
-                    {selectedMultimedia
-                      ? selectedMultimedia.user.userName
-                      : "Username"}
-                  </p>
-                </div>
-                <div className={styles.descriptionContainer}>
-                  <h5 className="m-0">
-                    Posted:{" "}
-                    {selectedMultimedia ? selectedMultimedia.createdAt : "Date"}
-                  </h5>
-                  <p className="m-0">
-                    {selectedMultimedia
-                      ? selectedMultimedia.multimediaDescription
-                      : "Description"}
-                  </p>
-                </div>
-              </Card>
-              <Card
-                title="3,316 Comments"
-                className={styles.multimediaColumn1}
-              ></Card>
+              {selectedMultimedia ? (
+                <>
+                  <div className={styles.playerWrapper} ref={playerWrapperRef}>
+                    <ReactPlayer
+                      className={styles.reactPlayer}
+                      url={
+                        selectedMultimedia
+                          ? [selectedMultimedia.videoLinkUrl]
+                          : []
+                      }
+                      controls={true}
+                      width="100%"
+                      height="100%"
+                      config={{
+                        file: {
+                          attributes: {
+                            controlsList: "nodownload", // This will work for browsers that support it
+                          },
+                        },
+                      }}
+                    />
+                  </div>
+                  <Card
+                    title={
+                      selectedMultimedia
+                        ? selectedMultimedia.multimediaTitle
+                        : "Empty Title"
+                    }
+                    className={styles.multimediaColumn1}
+                  >
+                    <div className={styles.multimediaRow}>
+                      <div className={styles.imageContainer}>
+                        <Image
+                          src={HumanIcon}
+                          alt="Profile Picture"
+                          className={styles.avatar}
+                        />
+                        <p className="m-0">
+                          {selectedMultimedia
+                            ? selectedMultimedia.user.userName
+                            : "Username"}
+                        </p>
+                      </div>
+                      {selectedMultimedia &&
+                        selectedMultimedia.user.userId === userIdRef && (
+                          <Button
+                            size="small"
+                            icon="pi pi-file-edit"
+                            label="Edit Multimedia"
+                            rounded
+                            onClick={openEditDialog}
+                            className={styles.editMultimediaBtn}
+                          />
+                        )}
+                    </div>
+                    <div className={styles.descriptionContainer}>
+                      <h5 className="m-0">
+                        Posted:{" "}
+                        {selectedMultimedia
+                          ? Utility.timeAgo(selectedMultimedia.createdAt)
+                          : "Date"}
+                      </h5>
+                      <p className="m-0">
+                        {selectedMultimedia
+                          ? selectedMultimedia.multimediaDescription
+                          : "Description"}
+                      </p>
+                    </div>
+                  </Card>
+                  <Card
+                    title="3,316 Comments"
+                    className={styles.multimediaColumn1}
+                  ></Card>
+                </>
+              ) : (
+                <>
+                  <Skeleton width="100%" height="40rem" />
+                </>
+              )}
             </div>
             <div className={styles.multimediaRightColumn}>
-              <Button
-                size="small"
-                icon="pi pi-plus"
-                label="Create Multimedia"
-                rounded
-                onClick={openCreateDialog}
-                className={styles.createMultimediaBtn}
-              />
+              {userIdRef && accessToken && (
+                <Button
+                  size="small"
+                  icon="pi pi-plus"
+                  label="Create Multimedia"
+                  rounded
+                  onClick={openCreateDialog}
+                  className={styles.createMultimediaBtn}
+                />
+              )}
               <MultimediaSearchBar
                 onSearchQueryChange={handleSearchQueryChange}
                 searchQuery={searchQuery}
@@ -231,6 +289,17 @@ const TopicDetails = ({ params }) => {
         accessToken={accessToken}
         setRefreshData={setRefreshData}
         onSubmitSuccess={() => setCreateDialogOpen(false)}
+        showToast={toast}
+      />
+      <EditMultimediaCard
+        multimedia={selectedMultimedia}
+        hideEditDialog={hideEditDialog}
+        openEditDialog={editDialogOpen}
+        userIdRef={userIdRef}
+        topicIdRef={params.id}
+        accessToken={accessToken}
+        onMultimediaUpdate={handleMultimediaUpdate}
+        onSubmitSuccess={() => setEditDialogOpen(false)}
         showToast={toast}
       />
     </>

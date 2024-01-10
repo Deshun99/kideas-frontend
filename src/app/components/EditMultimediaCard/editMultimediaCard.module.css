@@ -30,7 +30,8 @@
 .categoriesContainer,
 .statusContainer,
 .thumbnailUrlContainer,
-.videoLinkUrlContainer
+.videoLinkUrlContainer,
+.statusContainer,
 .guideLinesContainer {
   margin-top: 20px;
 }

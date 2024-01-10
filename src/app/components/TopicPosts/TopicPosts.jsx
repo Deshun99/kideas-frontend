@@ -23,7 +23,6 @@ const TopicPosts = ({
   categories,
   searchQuery,
 }) => {
-  console.log("Topics array:", topics);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [reportDialogOpen, setReportDialogOpen] = useState(false);
@@ -153,16 +152,6 @@ const TopicPosts = ({
             {Utility.timeAgo(data.createdAt)}
           </div>
           {data.status !== "Inactive" && (
-            // <div className={styles.commentInfo}>
-            //   <Badge value={data?.multimedias.length} severity="info"></Badge>
-            //   <Button
-            //     label="View Videos"
-            //     icon="pi pi-video"
-            //     rounded
-            //     onClick={() => multimediaPage(data)}
-            //     className={styles.multimediaButton}>
-            //   </Button>
-            // </div>
             <div className={styles.videoInfo}>
               <Button
                 rounded

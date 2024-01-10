@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "primereact/button";
-import styles from "./createMultimediaCard.module.css";
+import styles from "./editMultimediaCard.module.css";
 import { useState, useEffect, useRef } from "react";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
@@ -9,18 +9,19 @@ import { RadioButton } from "primereact/radiobutton";
 import { Checkbox } from "primereact/checkbox";
 import Enums from "@/app/common/enums/enums";
 import { removeFile, uploadFile } from "@/app/api/upload/route";
-import { createMultimedia } from "@/app/api/multimedia/route";
+import { createMultimedia, updateMultimedia } from "@/app/api/multimedia/route";
 import { ProgressBar } from "primereact/progressbar";
-import { ProgressSpinner } from "primereact/progressspinner";
 import ReactPlayer from "react-player";
+import { ProgressSpinner } from "primereact/progressspinner";
 
-const CreateMultimediaCard = ({
-  hideCreateDialog,
-  openCreateDialog,
+const EditMultimediaCard = ({
+  multimedia,
+  hideEditDialog,
+  openEditDialog,
   userIdRef,
   topicIdRef,
   accessToken,
-  setRefreshData,
+  onMultimediaUpdate,
   onSubmitSuccess,
   showToast,
 }) => {
@@ -28,6 +29,7 @@ const CreateMultimediaCard = ({
   const [multimediaDescription, setMultimediaDescription] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [videoLinkUrl, setVideoLinkUrl] = useState("");
+  const [status, setStatus] = useState("");
   const [checkedGuideLines, setCheckedGuideLines] = useState("");
   const [formData, setFormData] = useState({
     multimediaTitle: "",
@@ -35,8 +37,6 @@ const CreateMultimediaCard = ({
     thumbnailUrl: "",
     videoLinkUrl: "",
     status: Enums.ACTIVE,
-    createdAt: new Date(),
-    topicId: topicIdRef,
     userId: userIdRef,
   });
   const maxCharacterCount = 8000;
@@ -46,6 +46,7 @@ const CreateMultimediaCard = ({
     useState(true);
   const [thumbnailUrlValid, setThumbnailUrlValid] = useState(true);
   const [videoLinkUrlValid, setVideoLinkValid] = useState(true);
+  const [statusValid, setStatusValid] = useState(true);
   const [guideLinesValid, setGuideLinesValid] = useState(true);
   const [formValid, setFormValid] = useState(true);
 
@@ -84,7 +85,7 @@ const CreateMultimediaCard = ({
         await removeFile(formData.thumbnailUrl, accessToken);
       }
       const response = await uploadFile(file, accessToken);
-      
+
       if (inputId === "thumbnailUrl") {
         setFormData((prevState) => ({
           ...prevState,
@@ -127,23 +128,32 @@ const CreateMultimediaCard = ({
     }
   };
 
-  const resetForm = () => {
-    setMultimediaTitle("");
-    setMultimediaDescription("");
-    setThumbnailUrl("");
-    setVideoLinkUrl("");
-    setCheckedGuideLines("");
-    setFormData({
-      multimediaTitle: "",
-      multimediaDescription: "",
-      thumbnailUrl: "",
-      videoLinkUrl: "",
-      status: Enums.ACTIVE,
-      createdAt: new Date(),
-      topicId: topicIdRef,
-      userId: userIdRef,
-    });
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+    setFormData((prevData) => ({
+      ...prevData,
+      status: e.target.value,
+    }));
   };
+
+  useEffect(() => {
+    if (multimedia) {
+      setMultimediaTitle(multimedia.multimediaTitle || "");
+      setMultimediaDescription(multimedia.multimediaDescription || "");
+      setThumbnailUrl(multimedia.thumbnailUrl || "");
+      setVideoLinkUrl(multimedia.videoLinkUrl || "");
+      setStatus(multimedia.status || "");
+      setFormData((prevData) => ({
+        ...prevData,
+        multimediaTitle: multimedia.multimediaTitle || "",
+        multimediaDescription: multimedia.multimediaDescription || "",
+        status: multimedia.status || "",
+        thumbnailUrl: multimedia.thumbnailUrl || "",
+        videoLinkUrl: multimedia.videoLinkUrl || "",
+        userId: userIdRef,
+      }));
+    }
+  }, [multimedia]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -183,37 +193,49 @@ const CreateMultimediaCard = ({
       setGuideLinesValid(true);
     }
 
+    if (!status) {
+      setStatusValid(false);
+    } else {
+      setStatusValid(true);
+    }
+
     if (
       multimediaTitle.trim() &&
       multimediaDescription.trim() &&
       thumbnailUrl.trim() &&
       videoLinkUrl.trim() &&
+      status &&
       checkedGuideLines
     ) {
       setFormValid(true);
 
       try {
-        const response = await createMultimedia(formData, accessToken);
+        const response = await updateMultimedia(
+          multimedia.multimediaId,
+          formData,
+          accessToken
+        );
 
         if (response) {
           if (showToast.current) {
             showToast.current.show({
-               severity: "success",
-               summary: "Success",
-               detail: "Successfully Created Multimedia",
-               life: 5000,
-             });
+              severity: "success",
+              summary: "Success",
+              detail: "Successfully Updated Multimedia",
+              life: 5000,
+            });
           }
         }
-        setRefreshData((prev) => !prev);
-        resetForm();
+        // setRefreshData((prev) => !prev);
+        const updatedMultimedia = response.data; 
+        onMultimediaUpdate(updatedMultimedia); 
         onSubmitSuccess();
       } catch (error) {
         if (showToast.current) {
           showToast.current.show({
             severity: "error",
             summary: "Error",
-            detail: "There was an error creating topic",
+            detail: error.message,
             life: 5000,
           });
         }
@@ -281,15 +303,26 @@ const CreateMultimediaCard = ({
           });
         }
       }
+
+      if (!status) {
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please select a status",
+            life: 5000,
+          });
+        }
+      }
     }
   };
 
   return (
     <>
       <Dialog
-        header="Create Multimedia"
-        visible={openCreateDialog}
-        onHide={hideCreateDialog}
+        header="Edit Multimedia"
+        visible={openEditDialog}
+        onHide={hideEditDialog}
         className={styles.editTopicDialog}
         draggable={false}
       >
@@ -298,8 +331,8 @@ const CreateMultimediaCard = ({
             <div className={styles.header}>
               <h5 className={styles.newTopicMessage}>
                 Your video is tied to your account. Please read the guidelines
-                and be responsible when creating a post on Kideas&apos; forum to
-                avoid post removal. Happy posting!
+                and be responsible when uploading a video on Kideas&apos; forum
+                to avoid removal. Happy posting!
               </h5>
             </div>
             <div className={styles.multimediaTitleContainer}>
@@ -371,6 +404,29 @@ const CreateMultimediaCard = ({
                 )}
               </div>
             </div>
+            <div className={styles.statusContainer}>
+              <h4 className={styles.statusHeader}>Status</h4>
+              <div className={styles.status}>
+                <div className={styles.statusOption}>
+                  <RadioButton
+                    value="Active"
+                    name="status"
+                    onChange={handleStatusChange}
+                    checked={status === "Active"}
+                  />
+                  <label className={styles.statusLabel}>Active</label>
+                </div>
+                <div className={styles.statusOption1}>
+                  <RadioButton
+                    value="Inactive"
+                    name="status"
+                    onChange={handleStatusChange}
+                    checked={status === "Inactive"}
+                  />
+                  <label className={styles.statusLabel1}>Inactive</label>
+                </div>
+              </div>
+            </div>
             <div className={styles.guideLinesContainer}>
               <h4 className={styles.guideLinesHeader}>Guidelines</h4>
               <div className={styles.guideLines}>
@@ -398,4 +454,4 @@ const CreateMultimediaCard = ({
   );
 };
 
-export default CreateMultimediaCard;
+export default EditMultimediaCard;
