@@ -18,6 +18,8 @@ import Utility from "@/app/common/helper/utility";
 import { Skeleton } from "primereact/skeleton";
 import EditMultimediaCard from "@/app/components/EditMultimediaCard/editMultimediaCard";
 import CommentColumn from "@/app/components/CommentColumn/commentColumn";
+import MultimediaLeftColumn from "@/app/components/MultimediaLeftColumn/MultimediaLeftColumn";
+import MultimediaRightColumn from "@/app/components/MultimediaRightColumn/MultimediaRightColumn";
 
 const TopicDetails = ({ params }) => {
   const session = useSession();
@@ -83,7 +85,6 @@ const TopicDetails = ({ params }) => {
 
   //Boilerplate code
   const [selectedMultimedia, setSelectedMultimedia] = useState(null);
-  const ds = useRef(null);
 
   // Filter multimedia items based on search query
   const filteredMultimedias = useMemo(() => {
@@ -95,37 +96,6 @@ const TopicDetails = ({ params }) => {
         .includes(searchQuery.toLowerCase())
     );
   }, [topic, searchQuery]);
-
-  const itemTemplate = (data) => {
-    const isSelected =
-      selectedMultimedia &&
-      selectedMultimedia.multimediaId === data.multimediaId;
-
-    const handleItemClick = () => {
-      console.log("Item clicked:", data); // Log the clicked item
-      setSelectedMultimedia(data);
-    };
-    return (
-      <div
-        className={`${styles.thumbnailContainer} ${
-          isSelected ? styles.selectedItem : ""
-        }`}
-        onClick={handleItemClick}
-      >
-        <div className={styles.thumbnailImageContainer}>
-          <img
-            src={data.thumbnailUrl}
-            alt="Profile Picture"
-            className={styles.thumbnailImage}
-          />
-        </div>
-        <div className={styles.thumbnailContent}>
-          <h4 className={styles.thumbnailTitle}>{data.multimediaTitle}</h4>
-          <p className={styles.thumbnailUsername}>{data.user.userName}</p>
-        </div>
-      </div>
-    );
-  };
 
   const [mounted, setMounted] = useState(false);
   const playerWrapperRef = useRef();
@@ -182,128 +152,25 @@ const TopicDetails = ({ params }) => {
       {mounted && (
         <MediaQuery minWidth={1}>
           <div className={styles.multimediaContainer}>
-            <div className={styles.multimediaLeftColumn}>
-              {selectedMultimedia ? (
-                <>
-                  <div className={styles.playerWrapper} ref={playerWrapperRef}>
-                    <ReactPlayer
-                      className={styles.reactPlayer}
-                      url={
-                        selectedMultimedia
-                          ? [selectedMultimedia.videoLinkUrl]
-                          : []
-                      }
-                      controls={true}
-                      width="100%"
-                      height="100%"
-                      config={{
-                        file: {
-                          attributes: {
-                            controlsList: "nodownload", // This will work for browsers that support it
-                          },
-                        },
-                      }}
-                    />
-                  </div>
-                  <Card
-                    title={
-                      selectedMultimedia
-                        ? selectedMultimedia.multimediaTitle
-                        : "Empty Title"
-                    }
-                    className={styles.multimediaColumn1}
-                  >
-                    <div className={styles.multimediaRow}>
-                      <div className={styles.imageContainer}>
-                        <Image
-                          src={HumanIcon}
-                          alt="Profile Picture"
-                          className={styles.avatar}
-                        />
-                        <p className="m-0">
-                          {selectedMultimedia
-                            ? selectedMultimedia.user.userName
-                            : "Username"}
-                        </p>
-                      </div>
-                      {selectedMultimedia &&
-                        selectedMultimedia.user.userId === userIdRef && (
-                          <Button
-                            size="small"
-                            icon="pi pi-file-edit"
-                            label="Edit Multimedia"
-                            rounded
-                            onClick={openEditDialog}
-                            className={styles.editMultimediaBtn}
-                          />
-                        )}
-                    </div>
-                    <div className={styles.descriptionContainer}>
-                      <h5 className="m-0">
-                        Posted:{" "}
-                        {selectedMultimedia
-                          ? Utility.timeAgo(selectedMultimedia.createdAt)
-                          : "Date"}
-                      </h5>
-                      <p className="m-0">
-                        {selectedMultimedia
-                          ? selectedMultimedia.multimediaDescription
-                          : "Description"}
-                      </p>
-                    </div>
-                  </Card>
-                  <Card
-                    title={
-                      selectedMultimedia
-                        ? `${selectedMultimedia.comments.length} ${
-                            selectedMultimedia.comments.length === 1
-                              ? "Comment"
-                              : "Comments"
-                          }`
-                        : "0 Comments"
-                    }
-                    className={styles.multimediaColumn1}
-                  >
-                    <CommentColumn
-                      userIdRef={userIdRef}
-                      accessToken={accessToken}
-                      selectedMultimedia={selectedMultimedia}
-                      setRefreshData={setRefreshData}
-                      onCommentsUpdate={handleCommentsUpdate}
-                    />
-                  </Card>
-                </>
-              ) : (
-                <>
-                  <Skeleton width="100%" height="40rem" />
-                </>
-              )}
-            </div>
-            <div className={styles.multimediaRightColumn}>
-              {userIdRef && accessToken && (
-                <Button
-                  size="small"
-                  icon="pi pi-plus"
-                  label="Create Multimedia"
-                  rounded
-                  onClick={openCreateDialog}
-                  className={styles.createMultimediaBtn}
-                />
-              )}
-              <MultimediaSearchBar
-                onSearchQueryChange={handleSearchQueryChange}
-                searchQuery={searchQuery}
-              />
-              <DataScroller
-                ref={ds}
-                value={filteredMultimedias}
-                itemTemplate={itemTemplate}
-                rows={5}
-                loader
-                header=""
-                grid
-              />
-            </div>
+            <MultimediaLeftColumn
+              selectedMultimedia={selectedMultimedia}
+              userIdRef={userIdRef}
+              accessToken={accessToken}
+              openEditDialog={openEditDialog}
+              setRefreshData={setRefreshData}
+              handleCommentsUpdate={handleCommentsUpdate}
+              playerWrapperRef={playerWrapperRef}
+            />
+            <MultimediaRightColumn
+              selectedMultimedia={selectedMultimedia}
+              setSelectedMultimedia={setSelectedMultimedia}
+              userIdRef={userIdRef}
+              accessToken={accessToken}
+              searchQuery={searchQuery}
+              handleSearchQueryChange={handleSearchQueryChange}
+              openCreateDialog={openCreateDialog}
+              filteredMultimedias={filteredMultimedias}
+            />
           </div>
         </MediaQuery>
       )}

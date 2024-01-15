@@ -1,0 +1,176 @@
+.multimediaContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  padding: 10px 10px 10px 10px;
+}
+
+.multimediaLeftColumn, .multimediaRightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.multimediaLeftColumn {
+  flex: 1; /* Allows the column to grow and take up 80% of the space */
+  max-width: 77%; /* Sets the maximum width to 80% */
+  /* border-style: solid;
+  border-width: 1px; 
+  border-color: black; */
+}
+
+.multimediaRightColumn {
+  flex: 0 0 23%; /* takes up 20% of the multimediaContainer */
+  /* border-style: solid;
+  border-width: 1px; 
+  border-color: black; */
+  display: flex;
+  justify-content: center; /* Horizontally center the children */
+  align-items: center; /* Vertically center the children */
+  height: 100%; /* or a specific height as needed */
+}
+
+.playerWrapper {
+  position: relative;
+  padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+}
+
+.reactPlayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.multimediaColumn1, .multimediaColumn2 {
+  /* max-width: 1080px; */
+  width: 100%; 
+  font-family: 'Montserrat', sans-serif; 
+  gap: 5px;
+}
+
+
+
+.multimediaRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between; /* This will push the children to the ends */
+  gap: 5px;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.descriptionContainer {
+  margin-top: 10px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.createMultimediaBtn {
+  border: #35acfe !important;
+  background-color: #35acfe !important;
+  color: #edf6f9 !important;
+  width: 190px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.createMultimediaBtn:hover {
+  border: #2196f3 !important;
+  background-color: #2196f3 !important;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.editMultimediaBtn {
+  border: #ffa726 !important;
+  background-color: #ffa726 !important;
+  color: #edf6f9 !important;
+  width: 170px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editMultimediaBtn:hover {
+  border: #fb8c00 !important;
+  background-color: #fb8c00 !important;
+  color: #edf6f9 !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.thumbnailContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 10px;
+  width: 100%;
+  height: auto; 
+  width: 300px; /* Fixed width */
+  transition: transform 0.5s ease;
+}
+
+.selectedItem {
+  background-color: #d3d3d3;
+  border-radius: 5px; /* or any other style you prefer */
+}
+
+.thumbnailContainer:hover {
+  cursor: pointer;
+}
+
+.thumbnailImage {
+  width: 160px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.thumbnailContainer:hover {
+  transform: scale(1.1); /* Adjust scale value to control zoom level */
+}
+
+.thumbnailContent {
+  flex-grow: 1;
+  display: flex;
+  margin-left: 5px;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  overflow: hidden;
+}
+
+.thumbnailTitle, .thumbnailUsername {
+  white-space: nowrap; /* Keep titles in one line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add an ellipsis to text that overflows */
+}
+
+.thumbnailTitle {
+  font-weight: bold;
+  margin-right: 5px; 
+  margin-bottom: 5px;
+}
+
+.thumbnailUsername {
+  margin-right: 5px;
+}
