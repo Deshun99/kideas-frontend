@@ -136,34 +136,36 @@ const CommentColumn = ({
       <Toast ref={toast} />
       {selectedMultimedia.status !== "Inactive" && (
         <>
-          <div className={styles.leaveCommentContainer}>
-            <form onSubmit={(e) => handleSubmit(e)}>
-              <div className={styles.leaveCommentHeader}>
-                <h3>Leave a comment!</h3>
-              </div>
-              <div className={styles.leaveCommentContent}>
-                <InputTextarea
-                  rows={5}
-                  cols={75}
-                  value={comment}
-                  onChange={(e) => handleCommentChange(e)}
-                  className={styles.textarea}
-                />
-              </div>
-              <div className={styles.leaveCommentFooter}>
-                <div className={styles.characterCount}>
-                  {maxCharacterCount - comment.length} characters left
+          {userIdRef && accessToken && (
+            <div className={styles.leaveCommentContainer}>
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <div className={styles.leaveCommentHeader}>
+                  <h3>Leave a comment!</h3>
                 </div>
-                <div className={styles.commentButtonContainer}>
-                  <Button
-                    icon="pi pi-arrow-right"
-                    size="small"
-                    className={styles.commentButton}
+                <div className={styles.leaveCommentContent}>
+                  <InputTextarea
+                    rows={5}
+                    cols={75}
+                    value={comment}
+                    onChange={(e) => handleCommentChange(e)}
+                    className={styles.textarea}
                   />
                 </div>
-              </div>
-            </form>
-          </div>
+                <div className={styles.leaveCommentFooter}>
+                  <div className={styles.characterCount}>
+                    {maxCharacterCount - comment.length} characters left
+                  </div>
+                  <div className={styles.commentButtonContainer}>
+                    <Button
+                      icon="pi pi-arrow-right"
+                      size="small"
+                      className={styles.commentButton}
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          )}
           <div className={styles.allCommentsContainer}>
             <div className={styles.allCommentsHeader}>
               <h3>{comments.length} comments</h3>
