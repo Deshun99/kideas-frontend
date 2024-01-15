@@ -17,6 +17,7 @@ import MultimediaSearchBar from "@/app/components/MultimediaSearchBar/multimedia
 import Utility from "@/app/common/helper/utility";
 import { Skeleton } from "primereact/skeleton";
 import EditMultimediaCard from "@/app/components/EditMultimediaCard/editMultimediaCard";
+import CommentColumn from "@/app/components/CommentColumn/commentColumn";
 
 const TopicDetails = ({ params }) => {
   const session = useSession();
@@ -69,6 +70,15 @@ const TopicDetails = ({ params }) => {
   const handleMultimediaUpdate = (updatedMultimedia) => {
     setSelectedMultimedia(updatedMultimedia);
     setRefreshData((prev) => !prev); // Assuming this triggers a re-fetch or update of the data.
+  };
+
+  const handleCommentsUpdate = (newComments) => {
+    if (selectedMultimedia) {
+      setSelectedMultimedia({
+        ...selectedMultimedia,
+        comments: newComments,
+      });
+    }
   };
 
   //Boilerplate code
@@ -243,9 +253,25 @@ const TopicDetails = ({ params }) => {
                     </div>
                   </Card>
                   <Card
-                    title="3,316 Comments"
+                    title={
+                      selectedMultimedia
+                        ? `${selectedMultimedia.comments.length} ${
+                            selectedMultimedia.comments.length === 1
+                              ? "Comment"
+                              : "Comments"
+                          }`
+                        : "0 Comments"
+                    }
                     className={styles.multimediaColumn1}
-                  ></Card>
+                  >
+                    <CommentColumn
+                      userIdRef={userIdRef}
+                      accessToken={accessToken}
+                      selectedMultimedia={selectedMultimedia}
+                      setRefreshData={setRefreshData}
+                      onCommentsUpdate={handleCommentsUpdate}
+                    />
+                  </Card>
                 </>
               ) : (
                 <>
