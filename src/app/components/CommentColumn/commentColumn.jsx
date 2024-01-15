@@ -34,12 +34,12 @@ const CommentColumn = ({
   useEffect(() => {
     // retrieve api comment here
     console.log("Comments refreshed!");
-    if (selectedMultimedia?.multimediaId) {
-      getAllForumCommentsByMultimediaId(selectedMultimedia?.multimediaId).then(
+    if (selectedMultimedia) {
+      getAllForumCommentsByMultimediaId(selectedMultimedia.multimediaId).then(
         (comments) => setComments(comments.data)
       );
     }
-  }, [refreshComments, accessToken]);
+  }, [refreshComments, accessToken, selectedMultimedia]);
 
   useEffect(() => {
     setFormData((prevData) => ({
@@ -165,6 +165,9 @@ const CommentColumn = ({
             </form>
           </div>
           <div className={styles.allCommentsContainer}>
+            <div className={styles.allCommentsHeader}>
+              <h3>{comments.length} comments</h3>
+            </div>
             <MultimediaComments comments={comments} />
           </div>
         </>
