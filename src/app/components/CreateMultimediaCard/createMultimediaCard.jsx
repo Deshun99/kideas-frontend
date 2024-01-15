@@ -52,6 +52,14 @@ const CreateMultimediaCard = ({
   const [thumbnailUploading, setThumbnailUploading] = useState(false);
   const [videoLinkUploading, setVideoLinkUploading] = useState(false);
 
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      userId: userIdRef,
+      topicId: topicIdRef,
+    }));
+  }, [userIdRef, topicIdRef]);
+
   const handleMultimediaTitleChange = (e) => {
     setMultimediaTitle(e.target.value);
     setFormData((prevData) => ({
