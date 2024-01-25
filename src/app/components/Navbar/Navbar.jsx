@@ -10,18 +10,17 @@ import HumanIcon from "../../../../public/icon.png";
 import { UserContext } from "@/app/context/UserContext";
 import Enums from "@/app/common/enums/enums";
 import { ThemeContext } from "@/app/context/ThemeContext";
+import { Button } from "primereact/button";
 // import { Button } from "primereact/button";
 // import { useRouter } from "next/router";
 
 const MENU_LIST_CONTENT_CREATOR = [
-  { text: "Home", href: "/" },
   { text: "Chat", href: "/chat" },
   { text: "Topic", href: "/topic" },
   { text: "My Topics", href: "/myTopic" },
 ];
 
 const MENU_LIST_ADMIN = [
-  { text: "Home", href: "/" },
   { text: "Chat", href: "/chat" },
   { text: "Topic", href: "/topic" },
   { text: "User Management", href: "/userManagement" },
@@ -29,7 +28,6 @@ const MENU_LIST_ADMIN = [
 ];
 
 const MENU_LIST_VISITOR = [
-    { text: "Home", href: "/" }, 
     { text: "Topic", href: "/topic" },
 ];
 
@@ -148,7 +146,7 @@ const Navbar = () => {
               </div>
             ))}
 
-          {session.status == "unauthenticated" &&
+          {session.status === "unauthenticated" &&
             MENU_LIST_VISITOR.map((menu, idx) => (
               <div
                 className={styles.menuItem}
@@ -161,6 +159,16 @@ const Navbar = () => {
                 <NavItem active={activeIdx === idx} {...menu} />
               </div>
             ))}
+          {session.status === "unauthenticated" && (
+            <div className={styles.buttonContainer}>
+              <Button
+                className={styles.button}
+                onClick={() => (window.location.href = "/login")}
+              >
+                Get Started
+              </Button>
+            </div>
+          )}
           {session.status === "authenticated" && (
             <>
               <div className={styles.imageContainer}>

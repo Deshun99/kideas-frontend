@@ -1,7 +1,7 @@
 export const getUserTopics = async (userId, accessToken) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/topic/myTopic?userId=${userId}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/topic/myTopic/${userId}`,
       {
         method: "GET",
         headers: {
@@ -11,12 +11,14 @@ export const getUserTopics = async (userId, accessToken) => {
         cache: "no-store",
       }
     );
-    const responseBody = await res.json();
-
-    if (responseBody.statusCode === 404) {
-      throw new Error(responseBody.message || "An error occurred");
+    if (!res.ok) {
+      const responseBody = await res.json();
+      throw new Error(
+        responseBody.message || `An error occurred: ${res.status}`
+      );
     }
-    return await responseBody;
+
+    return await res.json();
   } catch (error) {
     console.log("There was a problem fetching the users", error);
     throw error;
