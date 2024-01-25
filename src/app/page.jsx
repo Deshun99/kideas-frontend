@@ -2,16 +2,23 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useSession } from "next-auth/react";
-import Parenthood from "./../../public/parenthood.jpg";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import Parenthood2 from "./../../public/parenthood2.jpeg";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 export default function Home() {
   const session = useSession();
+  const router = useRouter();
 
   const accessToken =
     session.status === "authenticated" &&
     session.data &&
     session.data.user.accessToken;
+
+  if(session) {
+    router?.push("/topic");
+  }
 
   return (
     <div className={styles.container}>

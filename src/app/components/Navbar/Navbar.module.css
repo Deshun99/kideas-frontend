@@ -118,6 +118,7 @@
   pointer-events: auto;
 }
 
+
 @media screen and (min-width: 900px) {
   .nav__menu_bar {
     display: none;

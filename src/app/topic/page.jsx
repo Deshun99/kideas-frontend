@@ -60,10 +60,15 @@ const Topic = () =>  {
               categoryId: category.categoryId,
               categoryTitle: category.categoryTitle,
             }));
-            const myPostMenu = { 
-              categoryId: 0,
-              categoryTitle: "My Posts" };
-            filteredResponse.unshift(myPostMenu); // show 'My Posts' menu as first option
+
+            if (accessToken) {
+              const myPostMenu = {
+                categoryId: 0,
+                categoryTitle: "My Posts",
+              };
+              filteredResponse.unshift(myPostMenu); 
+            }
+
             setCategories(filteredResponse);
 
             const categoryTitleToId = activeCategories.reduce(
@@ -73,7 +78,7 @@ const Topic = () =>  {
               },
               {}
             );
-            
+
             // Fetch topics for the selected categoryTitle, if applicable
             if (
               categoryTitle !== "My Posts" &&
@@ -81,16 +86,17 @@ const Topic = () =>  {
               categoryTitle
             ) {
               const selectedCategoryId = categoryTitleToId[categoryTitle];
-              const selectedCategory = activeCategories.find(c => c.categoryId === selectedCategoryId);
+              console.log(selectedCategoryId);
+              const selectedCategory = activeCategories.find(
+                (c) => c.categoryId === selectedCategoryId
+              );
               if (selectedCategory) {
                 setTopics(selectedCategory.topics);
                 setForumGuideLinesByCategory(selectedCategory.forumGuidelines);
               }
             } else if (categoryTitle === "My Posts" && accessToken) {
-              const response = await getUserTopics(
-                userId,
-                accessToken
-              );
+              const response = await getUserTopics(userId, accessToken);
+              console.log("hello my post");
               setTopics(response.data);
             } else if (categoryTitle === "Recent Posts") {
               const response = await getSortedTopics();

@@ -17,7 +17,7 @@ const Register = () => {
   const session = useSession();
   const router = useRouter();
   const toast = useRef(null);
-  
+
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);

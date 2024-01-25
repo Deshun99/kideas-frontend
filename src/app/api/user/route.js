@@ -34,9 +34,6 @@ export const createUser = async (userData) => {
     });
     const responseBody = await res.json();
 
-    // if (responseBody.statusCode === 409) {
-    //   throw new Error(responseBody.message || "An error occurred");
-    // }
     console.log(responseBody);
     return await responseBody;
   } catch (error) {
