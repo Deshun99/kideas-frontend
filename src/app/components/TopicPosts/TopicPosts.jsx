@@ -14,6 +14,7 @@ import DeleteTopicCard from "../DeleteTopicCard/deleteTopicCard";
 import { useRouter } from "next/navigation";
 import EditTopicCard from "../EditTopicCard/editTopicCard";
 import { Toast } from "primereact/toast";
+import { DataView } from "primereact/dataview";
 
 const TopicPosts = ({
   topics,
@@ -147,6 +148,17 @@ const TopicPosts = ({
           )}
         </div>
 
+        <div className={styles.thumbnailDataScrollerContent}>
+          <DataView
+            value={data.multimedias}
+            itemTemplate={multimediaTemplate}
+            rows={5}
+            loader
+            header=""
+            layout="grid"
+          />
+        </div>
+
         <div className={styles.footer}>
           <div className={styles.dateTimeText}>
             {Utility.timeAgo(data.createdAt)}
@@ -167,6 +179,23 @@ const TopicPosts = ({
       </div>
     );
   };
+
+  const multimediaTemplate = (data) => {
+    return (
+      <div className={styles.thumbnailContainer}>
+        <div className={styles.thumbnailImageContainer}>
+          <img
+            src={data.thumbnailUrl}
+            alt="Profile Picture"
+            className={styles.thumbnailImage}
+          />
+        </div>
+        <div className={styles.thumbnailContent}>
+          <h4 className={styles.thumbnailTitle}>{data.multimediaTitle}</h4>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

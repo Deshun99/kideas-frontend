@@ -109,6 +109,12 @@
   text-align: justify;
 }
 
+.thumbnailDataScrollerContent {
+  margin-top: 15px;
+  display: block;
+  flex-direction: column;
+}
+
 .showMore {
   margin-left: 10px;
   cursor: pointer;
@@ -182,4 +188,57 @@
 
 @media (max-width: 768px) {
   
+}
+
+.thumbnailContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 10px;
+  width: 100%;
+  height: auto; 
+  width: 170px; /* Fixed width */
+  transition: transform 0.5s ease;
+}
+
+.thumbnailImage {
+  width: 160px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.thumbnailContainer:hover {
+  transform: scale(1.1); /* Adjust scale value to control zoom level */
+}
+
+.thumbnailContainer:hover {
+  cursor: pointer;
+}
+
+.thumbnailContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: left;
+  overflow: hidden;
+}
+
+.thumbnailTitle, .thumbnailUsername {
+  white-space: nowrap; /* Keep titles in one line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add an ellipsis to text that overflows */
+  max-width: 150px;
+}
+
+.thumbnailTitle {
+  font-weight: bold;
+  margin-right: 5px; 
+  margin-bottom: 5px;
+}
+
+.thumbnailUsername {
+  margin-right: 5px;
 }
