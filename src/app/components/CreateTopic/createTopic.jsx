@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import Enums from "@/app/common/enums/enums";
 import { createTopic } from "@/app/api/topic/route";
+import { MultiSelect } from "primereact/multiselect";
 
 const CreateTopic = ({
   userIdRef,
@@ -36,6 +37,7 @@ const CreateTopic = ({
     status: Enums.ACTIVE,
     createdAt: new Date(),
     userId: userIdRef,
+    tags: "",
   });
   const toast = useRef(null);
   const maxCharacterCount = 8000;
@@ -45,6 +47,20 @@ const CreateTopic = ({
   const [categoryValid, setCategoryValid] = useState(true);
   const [guideLinesValid, setGuideLinesValid] = useState(true);
   const [formValid, setFormValid] = useState(true);
+
+  //boilerplate code
+  const [selectedTags, setSelectedTags] = useState(null);
+  const tags = [
+    { name: "Toddler", code: "Toddler" },
+    { name: "Primary School", code: "Primary School" },
+    { name: "Health", code: "Health" },
+    { name: "Habits", code: "Habits" },
+    { name: "Behaviour", code: "Behaviour" },
+    { name: "Recipes", code: "Recipes" },
+    { name: "Growing Up", code: "Growing Up" },
+    { name: "Character", code: "Character" },
+  ];
+  //boilerplate code
 
   const handleTopicTitleChange = (e) => {
     setTopicTitle(e.target.value);
@@ -74,6 +90,10 @@ const CreateTopic = ({
     }));
   };
 
+  const handleTagChange = (e) => {
+    setSelectedTags(e.value);
+  }
+
   const resetForm = () => {
     setTopicTitle("");
     setTopicDescription("");
@@ -85,6 +105,7 @@ const CreateTopic = ({
       status: Enums.ACTIVE,
       createdAt: new Date(),
       userId: userIdRef,
+      tags: "",
     });
   };
 
@@ -128,6 +149,8 @@ const CreateTopic = ({
       setFormValid(true);
 
       try {
+        const selectedTagsString = selectedTags.map((tag) => tag.code).join(",");
+        formData.tags = selectedTagsString;
         const response = await createTopic(formData, accessToken);
 
         if (response) {
@@ -247,8 +270,8 @@ const CreateTopic = ({
         <div className={styles.header}>
           <h5 className={styles.newTopicMessage}>
             Your post is tied to your account. Please read the guidelines and be
-            responsible when creating a post on Kideas&apos; forum to avoid
-            post removal. Happy posting!
+            responsible when creating a post on Kideas&apos; forum to avoid post
+            removal. Happy posting!
           </h5>
         </div>
         <div className={styles.topicTitleContainer}>
@@ -294,6 +317,19 @@ const CreateTopic = ({
               </div>
             ))}
           </div>
+        </div>
+        <div className={styles.tagContainer}>
+          <h4 className={styles.tagHeader}>Tags</h4>
+          <MultiSelect
+            value={selectedTags}
+            onChange={(e) => handleTagChange(e)}
+            options={tags}
+            optionLabel="name"
+            display="chip"
+            placeholder="Select Tags"
+            maxSelectedLabels={5}
+            className={styles.multiSelectTag}
+          />
         </div>
         {/* <div className={styles.anonymousContainer}>
           <div className={styles.anonymous}>
