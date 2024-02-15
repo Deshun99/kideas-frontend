@@ -20,6 +20,10 @@
 	width: 46vw !important;
 }
 
+.multiSelectTag {
+  width: 100%
+}
+
 .newTopicMessage {
   margin-top: 5px;
 }
@@ -29,6 +33,7 @@
 .topicDescriptionContainer,
 .categoriesContainer,
 .statusContainer,
+.tagContainer,
 .guideLinesContainer {
   margin-top: 20px;
 }
@@ -37,6 +42,7 @@
 .topicDescriptionHeader,
 .categoriesHeader,
 .statusHeader,
+.tagHeader,
 .guideLinesHeader {
   margin-bottom: 5px;
 }

@@ -9,6 +9,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { RadioButton } from "primereact/radiobutton";
 import { Checkbox } from "primereact/checkbox";
 import Enums from "@/app/common/enums/enums";
+import { MultiSelect } from "primereact/multiselect";
 
 const EditTopicCard = ({
   topic,
@@ -41,6 +42,7 @@ const EditTopicCard = ({
     status: "",
     categoryId: "",
     userId: userIdRef,
+    tags: "",
   });
   const maxCharacterCount = 8000;
 
@@ -50,6 +52,20 @@ const EditTopicCard = ({
   const [statusValid, setStatusValid] = useState(true);
   const [guideLinesValid, setGuideLinesValid] = useState(true);
   const [formValid, setFormValid] = useState(true);
+
+  //boilerplate code
+  const [selectedTags, setSelectedTags] = useState(null);
+  const tags = [
+    { name: "Toddler", code: "Toddler" },
+    { name: "Primary School", code: "Primary School" },
+    { name: "Health", code: "Health" },
+    { name: "Habits", code: "Habits" },
+    { name: "Behaviour", code: "Behaviour" },
+    { name: "Recipes", code: "Recipes" },
+    { name: "Growing Up", code: "Growing Up" },
+    { name: "Character", code: "Character" },
+  ];
+  //boilerplate code
 
   const handleTopicTitleChange = (e) => {
     setTopicTitle(e.target.value);
@@ -87,6 +103,10 @@ const EditTopicCard = ({
     }));
   };
 
+  const handleTagChange = (e) => {
+    setSelectedTags(e.value);
+  };
+
   useEffect(() => {
     if (topic) {
       setTopicTitle(topic.topicTitle || "");
@@ -101,6 +121,19 @@ const EditTopicCard = ({
         categoryId: topic.category.categoryId || "",
         userId: userIdRef,
       }));
+
+      // Assuming topic.tags is your comma-separated string of tags
+      if (topic.tags) {
+        const tagArray = topic.tags.split(",").map((tag) => ({
+          // Here, we assume you want to use the same value for name and code
+          // Adjust this mapping as necessary to fit your actual data structure
+          name: tag.trim(), // Trim whitespace
+          code: tag.trim(), // Trim whitespace
+        }));
+        setSelectedTags(tagArray);
+      } else {
+        setSelectedTags([]);
+      }
     }
   }, [topic]);
 
@@ -151,6 +184,10 @@ const EditTopicCard = ({
       setFormValid(true);
 
       try {
+        const selectedTagsString = selectedTags
+          .map((tag) => tag.code)
+          .join(",");
+        formData.tags = selectedTagsString;
         const response = await updateTopic(
           topic.topicId,
           formData,
@@ -158,32 +195,32 @@ const EditTopicCard = ({
         );
 
         if (response) {
-           if (showToast.current) {
-             showToast.current.show({
-               severity: "success",
-               summary: "Success",
-               detail: "Successfully Updated Topic",
-               life: 5000,
-             });
-           }
-        //   toast.current?.show({
-        //     severity: "success",
-        //     summary: "Success",
-        //     detail: "Successfully Edited Topic",
-        //     life: 5000,
-        //   });
+          if (showToast.current) {
+            showToast.current.show({
+              severity: "success",
+              summary: "Success",
+              detail: "Successfully Updated Topic",
+              life: 5000,
+            });
+          }
+          //   toast.current?.show({
+          //     severity: "success",
+          //     summary: "Success",
+          //     detail: "Successfully Edited Topic",
+          //     life: 5000,
+          //   });
         }
         setRefreshData((prev) => !prev);
         onSubmitSuccess();
       } catch (error) {
-           if (showToast.current) {
-             showToast.current.show({
-               severity: "error",
-               summary: "Error",
-               detail: "There was an error creating topic",
-               life: 5000,
-             });
-           }
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: "There was an error creating topic",
+            life: 5000,
+          });
+        }
         // toast.current?.show({
         //   severity: "error",
         //   summary: "Error",
@@ -197,14 +234,14 @@ const EditTopicCard = ({
 
       // Show a toast message for each empty field
       if (!topicTitle.trim()) {
-           if (showToast.current) {
-             showToast.current.show({
-               severity: "warn",
-               summary: "Warning",
-               detail: "Please fill up the title",
-               life: 5000,
-             });
-           }
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please fill up the title",
+            life: 5000,
+          });
+        }
         // toast.current?.show({
         //   severity: "warn",
         //   summary: "Warning",
@@ -214,14 +251,14 @@ const EditTopicCard = ({
       }
 
       if (!topicDescription.trim()) {
-           if (showToast.current) {
-             showToast.current.show({
-               severity: "warn",
-               summary: "Warning",
-               detail: "Please fill up the content",
-               life: 5000,
-             });
-           }
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please fill up the content",
+            life: 5000,
+          });
+        }
         // toast.current?.show({
         //   severity: "warn",
         //   summary: "Warning",
@@ -231,14 +268,14 @@ const EditTopicCard = ({
       }
 
       if (!selectedCategory) {
-           if (showToast.current) {
-             showToast.current.show({
-               severity: "warn",
-               summary: "Warning",
-               detail: "Please select a category",
-               life: 5000,
-             });
-           }
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please select a category",
+            life: 5000,
+          });
+        }
         // toast.current?.show({
         //   severity: "warn",
         //   summary: "Warning",
@@ -248,14 +285,14 @@ const EditTopicCard = ({
       }
 
       if (!checkedGuideLines) {
-           if (showToast.current) {
-             showToast.current.show({
-               severity: "warn",
-               summary: "Warning",
-               detail: "Please agree to the guidelines",
-               life: 5000,
-             });
-           }
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please agree to the guidelines",
+            life: 5000,
+          });
+        }
         // toast.current?.show({
         //   severity: "warn",
         //   summary: "Warning",
@@ -265,14 +302,14 @@ const EditTopicCard = ({
       }
 
       if (!status) {
-           if (showToast.current) {
-             showToast.current.show({
-               severity: "warn",
-               summary: "Warning",
-               detail: "Please select a status",
-               life: 5000,
-             });
-           }
+        if (showToast.current) {
+          showToast.current.show({
+            severity: "warn",
+            summary: "Warning",
+            detail: "Please select a status",
+            life: 5000,
+          });
+        }
         // toast.current?.show({
         //   severity: "warn",
         //   summary: "Warning",
@@ -367,6 +404,19 @@ const EditTopicCard = ({
                   <label className={styles.statusLabel1}>Inactive</label>
                 </div>
               </div>
+            </div>
+            <div className={styles.tagContainer}>
+              <h4 className={styles.tagHeader}>Tags</h4>
+              <MultiSelect
+                value={selectedTags}
+                onChange={(e) => handleTagChange(e)}
+                options={tags}
+                optionLabel="name"
+                display="chip"
+                placeholder="Select Tags"
+                maxSelectedLabels={5}
+                className={styles.multiSelectTag}
+              />
             </div>
             <div className={styles.guideLinesContainer}>
               <h4 className={styles.guideLinesHeader}>Guidelines</h4>
