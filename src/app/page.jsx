@@ -16,9 +16,9 @@ export default function Home() {
     session.data &&
     session.data.user.accessToken;
 
-  if(session) {
-    router?.push("/topic");
-  }
+  // if(session) {
+  //   router?.push("/topic");
+  // }
 
   return (
     <div className={styles.container}>
