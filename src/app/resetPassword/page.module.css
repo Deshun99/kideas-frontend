@@ -1,0 +1,113 @@
+.loadingSession {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.error {
+  color: rgb(201, 15, 15);
+  text-align: center;
+}
+
+.title {
+  font-size: 40px;
+  color: black;
+  margin-bottom: 10px;
+  font-family: 'Source Sans 3', sans-serif; 
+}
+
+.form {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.inputContainer {
+  width: 400px;
+  position: relative; /* Set to relative so that the button can be positioned absolutely within this container */
+  display: flex;
+  flex-direction: column;
+}
+
+.inputContainer p {
+  color: rgb(0, 0, 0);
+}
+
+.input {
+  padding: 20px;
+  background-color: transparent;
+  border: 2px solid #bbb;
+  color: black;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%; /* Ensure input takes full width of the container */
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+.showPasswordButton {
+  position: absolute; /* Position the button absolutely within the inputContainer */
+  top: 65%; /* Center the button vertically */
+  right: 15px; /* Position the button 10px from the right edge of the inputContainer */
+  transform: translateY(-50%); /* Center the button vertically */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0041a9;
+  font-size: 15px;
+}
+
+.forgotPassword {
+  color: #0041a9;
+  margin-top: 15px;
+}
+
+.radio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px; /* Adjust the spacing between the radio button and label */
+  justify-content: center;
+}
+
+.button {
+  width: 400px;
+  padding: 15px;
+  cursor: pointer;
+  background-color: #35acfe;
+  border: none;
+  border-radius: 30px;
+  color: #eee;
+  font-size: 17px;
+}
+
+.radio p{
+  margin-top: 10px;
+}
+
+.radio label {
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 30px;
+  }
+  .form {
+    width: 300px;
+  }
+  .inputContainer {
+    width: 300px;
+  }
+  .button {
+    width: 300px;
+  }
+}
