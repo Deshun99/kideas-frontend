@@ -1,3 +1,13 @@
+.pageContainer {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 0px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Montserrat', sans-serif;
+}
+
 .header {
   position: sticky;
   z-index: 30;
@@ -10,7 +20,7 @@
   padding: 16px;
   justify-content: space-between;
   align-items: flex-start;
-  background-color: #ffc0cb;
+  background-color: "#ffffff";
 }
 
 .logo {
@@ -24,6 +34,7 @@
   cursor: pointer;
   align-items: flex-start;
   justify-content: flex-end; /* Adjust as needed */
+  background-color: "#ffffff";
 }
 
 .nav__menu_bar div {
@@ -44,7 +55,6 @@
   right: -500px;
   padding: 24px 16px;
   transition: ease 0.2s;
-  background-color: #ffc0cb;
 }
 
 .nav__menu_list_light.active {
@@ -119,7 +129,7 @@
 }
 
 
-@media screen and (min-width: 900px) {
+/* @media screen and (min-width: 900px) {
   .nav__menu_bar {
     display: none;
   }
@@ -178,17 +188,17 @@
     top: 100%;
     left: 0;
   }
-}
+} */
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .submenu {
     width: auto;
     left: 100%;
     top: 0;
   }
-}
+} */
 
-@media (min-width: 390px) and (max-width: 428px) {
+@media (min-width: 900px) {
   .nav-item:active .submenu,
   .nav-item:hover .submenu {
     display: block;

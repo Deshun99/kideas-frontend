@@ -148,7 +148,7 @@ const TopicPosts = ({
           )}
         </div>
 
-        <div className={styles.thumbnailDataScrollerContent}>
+        {/* <div className={styles.thumbnailDataScrollerContent}>
           <DataView
             value={data.multimedias}
             itemTemplate={multimediaTemplate}
@@ -157,7 +157,7 @@ const TopicPosts = ({
             header=""
             layout="grid"
           />
-        </div>
+        </div> */}
 
         <div className={styles.footer}>
           <div className={styles.dateTimeText}>
@@ -170,7 +170,7 @@ const TopicPosts = ({
                 onClick={() => multimediaPage(data)}
                 className={styles.multimediaButton}
               >
-                <Badge value={data?.multimedias.length} severity="info"></Badge>
+                {/* <Badge value={data?.multimedias.length} severity="info"></Badge> */}
                 Videos
               </Button>
             </div>

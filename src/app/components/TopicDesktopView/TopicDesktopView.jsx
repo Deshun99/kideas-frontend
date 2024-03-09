@@ -1,10 +1,12 @@
 "use client";
 import CategoryMenu from "../CategoryMenu/CategoryMenu";
+import CategoryMenuCarousel from "../CategoryMenuCarousel/CategoryMenuCarousel";
 import CreateTopicButton from "../CreateTopicButton/createTopicButton";
 import ForumGuidelinesCard from "../ForumGuidelinesCard/forumGuidelinesCard";
 import TopicPosts from "../TopicPosts/TopicPosts";
 import TopicSearchBar from "../TopicSearchBar/TopicSearchBar";
 import styles from "./topicDesktopView.module.css";
+import { Card } from "primereact/card";
 
 const TopicDesktopView = ({
   categoryTitle,
@@ -22,15 +24,38 @@ const TopicDesktopView = ({
     return (
       <>
         <div className={styles.pageContainer}>
-          <div className={styles.categoriesMenuContainer}>
-            <h1 className={styles.categories}>Categories</h1>
+          <div className={styles.leftContainer}>
+            {/* <h1 className={styles.categories}>Categories</h1>
             <CategoryMenu
               categories={categories}
               setCategoryTitle={setCategoryTitle}
               setForumGuideLinesByCategory={setForumGuideLinesByCategory}
-            />
+            /> */}
+            <Card title="Simple Card" className={styles.advertistment}>
+              <p className="m-0">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Inventore sed consequuntur error repudiandae numquam deserunt
+                quisquam repellat libero asperiores earum nam nobis, culpa
+                ratione quam perferendis esse, cupiditate neque quas! Lorem
+                ipsum dolor sit amet, consectetur adipisicing elit. Inventore
+                sed consequuntur error repudiandae numquam deserunt quisquam
+                repellat libero asperiores earum nam nobis, culpa ratione quam
+                perferendis esse, cupiditate neque quas! Lorem ipsum dolor sit
+                amet, consectetur adipisicing elit. Inventore sed consequuntur
+                error repudiandae numquam deserunt quisquam repellat libero
+                asperiores earum nam nobis, culpa ratione quam perferendis esse,
+                cupiditate neque quas!
+              </p>
+            </Card>
           </div>
           <div className={styles.middleContainer}>
+            <div className={styles.menuContainer}>
+              <CategoryMenuCarousel
+                categories={categories}
+                setCategoryTitle={setCategoryTitle}
+                setForumGuideLinesByCategory={setForumGuideLinesByCategory}
+              />
+            </div>
             <div className={styles.topMiddleContainer}>
               <div className={styles.searchBarContainer}>
                 <TopicSearchBar
@@ -59,11 +84,27 @@ const TopicDesktopView = ({
               />
             </div>
           </div>
-          <div className={styles.guideLinesContainer}>
-            <ForumGuidelinesCard
+          <div className={styles.rightContainer}>
+            {/* <ForumGuidelinesCard
               categoryTitle={categoryTitle}
               forumGuideLinesByCategory={forumGuideLinesByCategory}
-            />
+            /> */}
+            <Card title="Simple Card" className={styles.advertistment}>
+              <p className="m-0">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Inventore sed consequuntur error repudiandae numquam deserunt
+                quisquam repellat libero asperiores earum nam nobis, culpa
+                ratione quam perferendis esse, cupiditate neque quas! Lorem
+                ipsum dolor sit amet, consectetur adipisicing elit. Inventore
+                sed consequuntur error repudiandae numquam deserunt quisquam
+                repellat libero asperiores earum nam nobis, culpa ratione quam
+                perferendis esse, cupiditate neque quas! Lorem ipsum dolor sit
+                amet, consectetur adipisicing elit. Inventore sed consequuntur
+                error repudiandae numquam deserunt quisquam repellat libero
+                asperiores earum nam nobis, culpa ratione quam perferendis esse,
+                cupiditate neque quas!
+              </p>
+            </Card>
           </div>
         </div>
       </>
