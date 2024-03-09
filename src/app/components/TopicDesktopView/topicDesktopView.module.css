@@ -1,12 +1,11 @@
 .pageContainer {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
   padding: 20px;
-  background-color: inherit;
+  background-color: white;
   border-radius: 0px;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  font-family: 'Montserrat', sans-serif; 
+  font-family: 'Montserrat', sans-serif;
 }
 
 .title {
@@ -22,7 +21,8 @@
   margin-bottom: 10px;
 }
 
-.categoriesMenuContainer {
+.leftContainer {
+
 }
 
 .middleContainer {
@@ -41,6 +41,11 @@
   /* margin-right: 20px; */
 }
 
+.menuContainer {
+  display: flex;
+  flex-direction: row;
+}
+
 .searchBarContainer {
     /* padding-left: 3vw; */
 }
@@ -53,6 +58,12 @@
   width: 90%;
 }
 
-.guideLinesContainer {
+.rightContainer {
   min-height: 100vh;
+}
+
+.advertistment {
+  min-height: 100vh;
+  border-color: black;
+  background-color: aqua;
 }

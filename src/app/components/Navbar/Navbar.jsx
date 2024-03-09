@@ -60,147 +60,153 @@ const Navbar = () => {
   };
 
   return (
-    <header className={styles.header}>
-      {navActive && <div className={styles.overlay}></div>}{" "}
-      {/* Add the overlay element */}
-      <nav className={styles.nav}>
-        <Link href="/" className={styles.logo}>
-          <Image
-            src="/Kideas_logo.png"
-            alt="Kideas"
-            width={200}
-            height={100}
-            priority
-          />
-        </Link>
-        <div
-          onClick={() => setNavActive(!navActive)}
-          className={styles.nav__menu_bar}
-        >
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <div
-          className={`${navActive ? styles.active : ""} ${
-            styles.nav__menu_list_light
-          }`}
-        >
-          {session.status == "authenticated" &&
-            session.data.user.role === "Admin" &&
-            MENU_LIST_ADMIN.map((menu, idx) => (
-              <div
-                className={styles.menuItem}
-                onClick={() => {
-                  setActiveIdx(idx);
-                  setNavActive(false);
-                }}
-                key={menu.text}
-              >
-                <NavItem
-                  active={activeIdx === idx}
-                  text={menu.text}
-                  href={menu.href}
-                />
-              </div>
-            ))}
-
-          {session.status == "authenticated" &&
-            session.data.user.role === "Content_Creator" &&
-            MENU_LIST_CONTENT_CREATOR.map((menu, idx) => (
-              <div
-                className={styles.menuItem}
-                key={menu.text}
-                onClick={() => {
-                  setActiveIdx(idx);
-                  setNavActive(false);
-                }}
-                onMouseEnter={() => setShowSubMenu(true)} // Show sub-menu on hover
-                onMouseLeave={() => setShowSubMenu(false)} // Hide sub-menu on mouse leave
-              >
-                <div className="nav-item">
-                  <Link href={menu.href}>
-                    {" "}
-                    {/* Use Link for the main menu item */}
-                    <a>
-                      <NavItem
-                        active={activeIdx === idx}
-                        text={menu.text}
-                        href={menu.href}
-                      />
-                    </a>
-                  </Link>
-
-                  {menu.subMenu && showSubMenu && (
-                    <div className={styles.submenu}>
-                      {menu.subMenu.map((subMenuItem, subIdx) => (
-                        <Link href={subMenuItem.href} key={subIdx}>
-                          {" "}
-                          {/* Use Link for sub-menu items */}
-                          <a>{subMenuItem.text}</a>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-
-          {session.status === "unauthenticated" &&
-            MENU_LIST_VISITOR.map((menu, idx) => (
-              <div
-                className={styles.menuItem}
-                onClick={() => {
-                  setActiveIdx(idx);
-                  setNavActive(false);
-                }}
-                key={menu.text}
-              >
-                <NavItem active={activeIdx === idx} {...menu} />
-              </div>
-            ))}
-          {session.status === "unauthenticated" && (
-            <div className={styles.buttonContainer}>
-              <Button
-                className={styles.button}
-                onClick={() => (window.location.href = "/login")}
-              >
-                Get Started
-              </Button>
+    <div className={styles.pageContainer}>
+      <div className={styles.leftContainer}></div>
+      <div className={styles.middleContainer}>
+        <header className={styles.header}>
+          {navActive && <div className={styles.overlay}></div>}{" "}
+          {/* Add the overlay element */}
+          <nav className={styles.nav}>
+            <Link href="/" className={styles.logo}>
+              <Image
+                src="/Kideas_logo.png"
+                alt="Kideas"
+                width={200}
+                height={100}
+                priority
+              />
+            </Link>
+            <div
+              onClick={() => setNavActive(!navActive)}
+              className={styles.nav__menu_bar}
+            >
+              <div></div>
+              <div></div>
+              <div></div>
             </div>
-          )}
-          {session.status === "authenticated" && (
-            <>
-              <div className={styles.imageContainer}>
-                {userData?.profilePictureUrl ? (
-                  <Link href="/accountManagement">
-                    <img
-                      src={userData?.profilePictureUrl}
-                      alt="User Profile"
-                      className={styles.avatar}
-                      onClick={() => setNavActive(false)}
+            <div
+              className={`${navActive ? styles.active : ""} ${
+                styles.nav__menu_list_light
+              }`}
+            >
+              {session.status == "authenticated" &&
+                session.data.user.role === "Admin" &&
+                MENU_LIST_ADMIN.map((menu, idx) => (
+                  <div
+                    className={styles.menuItem}
+                    onClick={() => {
+                      setActiveIdx(idx);
+                      setNavActive(false);
+                    }}
+                    key={menu.text}
+                  >
+                    <NavItem
+                      active={activeIdx === idx}
+                      text={menu.text}
+                      href={menu.href}
                     />
-                  </Link>
-                ) : (
-                  <Link href="/accountManagement">
-                    <Image
-                      src={HumanIcon}
-                      alt="Profile Picture"
-                      className={styles.avatar}
-                      onClick={() => setNavActive(false)}
-                    />
-                  </Link>
-                )}
-                <h6>{userData?.userName}</h6>
-              </div>
-              <div className={styles.menuItem} onClick={handleSignOut}>
-                <NavItem text="Logout" href={"/"} />
-              </div>
-            </>
-          )}
-        </div>
-      </nav>
-    </header>
+                  </div>
+                ))}
+
+              {session.status == "authenticated" &&
+                session.data.user.role === "Content_Creator" &&
+                MENU_LIST_CONTENT_CREATOR.map((menu, idx) => (
+                  <div
+                    className={styles.menuItem}
+                    key={menu.text}
+                    onClick={() => {
+                      setActiveIdx(idx);
+                      setNavActive(false);
+                    }}
+                    onMouseEnter={() => setShowSubMenu(true)} // Show sub-menu on hover
+                    onMouseLeave={() => setShowSubMenu(false)} // Hide sub-menu on mouse leave
+                  >
+                    <div className="nav-item">
+                      <Link href={menu.href}>
+                        {" "}
+                        {/* Use Link for the main menu item */}
+                        <a>
+                          <NavItem
+                            active={activeIdx === idx}
+                            text={menu.text}
+                            href={menu.href}
+                          />
+                        </a>
+                      </Link>
+
+                      {menu.subMenu && showSubMenu && (
+                        <div className={styles.submenu}>
+                          {menu.subMenu.map((subMenuItem, subIdx) => (
+                            <Link href={subMenuItem.href} key={subIdx}>
+                              {" "}
+                              {/* Use Link for sub-menu items */}
+                              <a>{subMenuItem.text}</a>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+              {session.status === "unauthenticated" &&
+                MENU_LIST_VISITOR.map((menu, idx) => (
+                  <div
+                    className={styles.menuItem}
+                    onClick={() => {
+                      setActiveIdx(idx);
+                      setNavActive(false);
+                    }}
+                    key={menu.text}
+                  >
+                    <NavItem active={activeIdx === idx} {...menu} />
+                  </div>
+                ))}
+              {session.status === "unauthenticated" && (
+                <div className={styles.buttonContainer}>
+                  <Button
+                    className={styles.button}
+                    onClick={() => (window.location.href = "/login")}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              )}
+              {session.status === "authenticated" && (
+                <>
+                  <div className={styles.imageContainer}>
+                    {userData?.profilePictureUrl ? (
+                      <Link href="/accountManagement">
+                        <img
+                          src={userData?.profilePictureUrl}
+                          alt="User Profile"
+                          className={styles.avatar}
+                          onClick={() => setNavActive(false)}
+                        />
+                      </Link>
+                    ) : (
+                      <Link href="/accountManagement">
+                        <Image
+                          src={HumanIcon}
+                          alt="Profile Picture"
+                          className={styles.avatar}
+                          onClick={() => setNavActive(false)}
+                        />
+                      </Link>
+                    )}
+                    <h6>{userData?.userName}</h6>
+                  </div>
+                  <div className={styles.menuItem} onClick={handleSignOut}>
+                    <NavItem text="Logout" href={"/"} />
+                  </div>
+                </>
+              )}
+            </div>
+          </nav>
+        </header>
+      </div>
+      <div className={styles.rightContainer}></div>
+    </div>
   );
 };
 
